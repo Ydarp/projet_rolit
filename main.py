@@ -6,25 +6,33 @@ def tableau_depart():
     return t
 
 def nb_joueur():
-    """Demande le nombre de joueur et le renvoie en entier entre 1 et 4"""
+    """
+    Demande le nombre de joueur et le renvoie en entier entre 1 et 4
+    """
     nb_joueur = int(input("Quel est le nombre de joueur? - "))
     assert nb_joueur == 2 or nb_joueur == 3 or nb_joueur == 4 , "Veuillez choisir un nombre de joueur entre 2 et 4"
     return nb_joueur
 
-def pseudo(nb):
-    """Demande le pseudo de chaque joueur, les renvoies dans une liste et renvoie le nombre de joueur"""
+def pseudo(nb: int) :
+    """
+    Demande le pseudo de chaque joueur, les renvoies dans une liste et renvoie le nombre de joueur
+    """
     joueur = []
     for i in range (1,nb+1):
         joueur.append(input("Quel est le pseudo du joueur numero "+ str(i) +" - "))
     return nb,joueur
 
 def nb_manche():
-    """Demande le nombre de manche et le renvoie en entier"""
+    """
+    Demande le nombre de manche et le renvoie en entier
+    """
     nb_manche = input("Quel est le nombre de manche? - ")
     return nb_manche
 
-def couleur_joueur(joueur):
-    "Attribue à chaque joueur une couleur et les renvoies dans une liste"
+def couleur_joueur(joueur: list) -> list:
+    """
+    Attribue à chaque joueur une couleur et les renvoie dans une liste
+    """
     p, nb = joueur[1], joueur[0]
     if nb == 2:
         p[0],p[1] = "rouge","vert"
@@ -34,7 +42,7 @@ def couleur_joueur(joueur):
         p[0],p[1],p[2],p[4] = "rouge","jaune","vert","bleu"
     return p
 
-def capture(x: int, y: int) -> None:
+def capture(t: list,x: int, y: int) -> None:
     """
     Permet au joueur de la bille t[x][y] de changer la couleur des les autres billes honrizontalement, verticalement et diagonalent si possible.
     """
