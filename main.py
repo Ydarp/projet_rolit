@@ -53,7 +53,7 @@ def capture(t: list,x: int, y: int) -> None:
         xs = x
         ys = y 
         couleur_temp = []
-        while 0 <= xs + d[0]  <= 7 and 0 <= ys + d[1] <= 7 and t[xs][ys] != "0" and t[xs][ys] != couleur:
+        while 0 <= xs + d[0]  <= 7 and 0 <= ys + d[1] <= 7 and t[xs + d[0]][ys + d[1]]  != None and t[xs + d[0]][ys + d[1]] != couleur:
             xs += d[0]
             ys += d[1]
             couleur_temp.append((xs,ys))
