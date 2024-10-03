@@ -55,13 +55,10 @@ def capture(x: int, y: int) -> None:
     for c in couleurs_capture:
         t[c[0]][c[1]] = couleur
 
-
 def tableau_depart():
     t = [[None for i in range(8)] for i in range(8)]
     t[3][3],t[3][4],t[4][3],t[4][4] = "r","j","b","v"
     return t
-
-print(couleur_joueur(pseudo(nb_joueur())))
 
 def main():
     t = tableau_depart()
