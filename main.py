@@ -138,5 +138,4 @@ if __name__ == '__main__':
         affichage_tableau(t)
         x, y = int(input("Quel est la coordonnée horizontale de la couleur jouée - ")), int(input("Quel est la coordonnée verticale de la couleur jouée - "))
         t = capture(couleur_jouee(t, x, y, c),x ,y)
-    print('c est fini')
-        
+    print(pseudo[0]," a gagné !")
