@@ -24,20 +24,20 @@ def nb_manche():
     nb_manche = input("Quel est le nombre de manche? - ")
     return nb_manche
 
-def couleur_joueur(joueur: list, nb: int) -> list:
+def couleur_joueur(joueur: list) -> dict:
     """
-    Attribue à chaque joueur une couleur et les renvoie dans une liste
+    Attribue à chaque joueur une couleur et les renvoie dictionnaire
     """
-    p, nb_j = joueur, nb
+    d, nb_j = {}, len(joueur)
     if nb_j == 2:
-        p[0],p[1] = "rouge","vert"
+        d[joueur[0]],d[joueur[1]] = "R","V"
     elif nb_j == 3:
-        p[0],p[1],p[2] = "rouge","jaune","vert"
+        d[joueur[0]],d[joueur[1]],d[joueur[2]] = "R","J","V"
     else:
-        p[0],p[1],p[2],p[4] = "rouge","jaune","vert","bleu"
-    return p
+        d[joueur[0]],d[joueur[1]],d[joueur[2]],d[joueur[4]] = "R","J","V","B"
+    return d
 
-def capture(t: list,x: int, y: int) -> None:
+def capture(t: list,x: int, y: int) -> list:
     """
     Permet au joueur de la bille t[x][y] de changer la couleur des les autres billes honrizontalement, verticalement et diagonalent si possible.
     """
@@ -67,13 +67,14 @@ def compte_couleur(t):
     Returns:
         int : le nombre de rouge, jaune, bleu, vert
     """
+    r, j, b, v = 0, 0, 0, 0
     for i in range(8):
-        for j in range(8):
-            if t[i][j] == 'r':
+        for k in range(8):
+            if t[i][j] == 'R':
                 r += 1
-            elif t[i][j] == 'j':
+            elif t[i][j] == 'J':
                 j += 1
-            elif t[i][j] == 'b':
+            elif t[i][j] == 'B':
                 b += 1
             elif t[i][j] == 'V':
                 v += 1
@@ -122,20 +123,29 @@ def affichage_tableau(t: list):
                 print(t[i][j], " | ", end="")
         print()
         
+def tourne_tableau(t: list):
+    temp = t[0]
+    t.pop(0)
+    t.append(temp)
+    return t
 def tableau_depart():
     t = [[None for i in range(8)] for i in range(8)]
-    t[3][3],t[3][4],t[4][3],t[4][4] = "r","j","b","v"
+    t[3][3],t[3][4],t[4][3],t[4][4] = "R","J","B","V"
     return t
    
 if __name__ == '__main__':
     nb_j = nb_joueur()
     p = pseudo(nb_j)
     nb_m = nb_manche()
-    c_j = couleur_joueur(p, nb_j)
+    c_j = couleur_joueur(p)
+    t_c = []
+    for cle, valeur in c_j.items():
+        t_c.append(valeur)
     t = tableau_depart()
-    c = 'r'
     while fin(t) is False:
+        c = t_c[0]
         affichage_tableau(t)
         x, y = int(input("Quel est la coordonnée horizontale de la couleur jouée - ")), int(input("Quel est la coordonnée verticale de la couleur jouée - "))
         t = capture(couleur_jouee(t, x, y, c),x ,y)
+        t_c = tourne_tableau(t_c)
     print(pseudo[0]," a gagné !")
