@@ -32,6 +32,9 @@ def couleur_joueur(joueur: list) -> dict:
     Attribue à chaque couleur le pseudo d'un joueur et les renvoie dictionnaire
     """
     couleurs, d = ["R", "J", "V", "B"], {}
+    if len(joueur) == 2:
+        d = {"R": joueur[0], "V": joueur[1]}
+        return d
     for i in range(len(joueur)):
         d[couleurs[i]] = joueur[i]
     return d
@@ -82,6 +85,17 @@ def couleur_jouee(t: list, x: int, y: int, c: str):
     t[x][y] = c
     return t
 
+def couleur_affichage(t: list, x: int, y: int):
+    c = t[x][y]
+    if c == "R":
+        return "\x1b[31m"
+    elif c == "J":
+        return "\x1b[33m"
+    elif c == "V":
+        return "\x1b[32m"
+    elif c == "B":
+        return "\x1b[34m"
+
 def affichage_tableau(t: list):
     """affiche un tableau lisible
 
@@ -95,10 +109,25 @@ def affichage_tableau(t: list):
             if j == 0:
                 print("|   ", i," | ", end="")
             elif t[i][j-1] is not None:
-                print("  ", t[i][j-1], " | ", end="")
+                print("  ", couleur_affichage(t,i,j-1) + t[i][j-1] + "\x1b[0m", " | ", end="")
             else:
                 print(t[i][j-1], " | ", end="")
         print()
+
+def open_game(d: dict, t: list):
+    """tourne t un nombre de fois aléartoire
+
+    Args:
+        d (dict): dictionnaire qui attribut une couleur a chaque joueur
+        t (list): tabeau de couleur
+
+    Returns:
+        list: tableau de couleur
+    """
+    dc = randint(1,4)
+    for i in range(dc):
+        t = tourne_tableau(t)
+    return t
         
 def tourne_tableau(t: list):
     """met le premier indice du tableau a la fin
@@ -107,7 +136,7 @@ def tourne_tableau(t: list):
         t (list): tableau a double entree
 
     Returns:
-        t (list): tableau a double entree
+        t (list): tableau de couleur
     """
     t.append(t.pop(0))
     return t
@@ -142,7 +171,7 @@ def additionne_dict(d1: dict,d2: dict):
         r[cle] = d1[cle] + d2[cle]
     return r
 
-def case_jouable(t: list, x: int, y: int):
+def case_jouable(t: list, x: int, y: int, ia: bool):
     """Détermine si t[x][y] est jouable
 
     Args:
@@ -154,10 +183,12 @@ def case_jouable(t: list, x: int, y: int):
         bool: True si t[x][y] est jouable, False sinon
     """
     if (0 > x or 7 < x) or (0 > y or 7 < y):
-        print("Case pas dans le tableau. Réessayez.")
+        if ia is False:
+            print("Case pas dans le tableau. Réessayez.")
         return False
     elif t[x][y] is not None:
-        print("Case déjà occupée. Réessayez.")
+        if ia is False:
+            print("Case déjà occupée. Réessayez.")
         return False
     for dx in (-1, 0, 1):
         for dy in (-1, 0, 1):
@@ -166,18 +197,19 @@ def case_jouable(t: list, x: int, y: int):
             nx, ny = x + dx, y + dy
             if 0 <= nx < 8 and 0 <= ny < 8 and t[nx][ny] is not None: #vérifie si t[nx][ny] est dans le tableau et est vide
                 return True
-    print("Case pas adjacente a une couleur. Réessayez.")
+    if ia is False:
+        print("Case pas adjacente a une couleur. Réessayez.")
     return False
 
 def obtenir_coordonnees(t: list, alea: bool):
     if alea:
         x, y = randint(0, 7), randint(0, 7)
-        while not(case_jouable(t,x,y)):
+        while not(case_jouable(t,x,y,True)):
             x, y = randint(0, 7), randint(0, 7)
         return x, y
     else:
         x, y = int(input("Coordonnée verticale de la couleur jouée: ")), int(input("Coordonnée horizontale de la couleur jouée: "))
-        while not(case_jouable(t,x,y)):
+        while not(case_jouable(t,x,y,False)):
             x, y = int(input("Coordonnée verticale: ")), int(input("Coordonnée horizontale: "))
         return x, y
 
@@ -205,8 +237,8 @@ if __name__ == '__main__':
     nb_j, nb_m, alea = nb_joueur(),nb_manche(),ia_alea()
     p = pseudo(nb_j)
     c_j = couleur_joueur(p)
-    t_c = list(c_j.keys())
     while k < nb_m:
+        t_c = open_game(c_j,list(c_j.keys()))
         t = tableau_depart()
         print("Manche numéro", k+1, "sur", nb_m)
         while sum(compte_couleur(t).values()) != 64:
