@@ -10,8 +10,13 @@ def nb_joueur():
     return nb_joueur
 
 def pseudo(nb: int) :
-    """
-    Demande le pseudo de chaque joueur et les renvoies dans une liste
+    """Demande le pseudo de chaque joueur
+
+    Args:
+        nb (int): nombre de joueur
+
+    Returns:
+        list: tableau des pseudo
     """
     joueur = []
     for i in range (nb):
@@ -19,8 +24,10 @@ def pseudo(nb: int) :
     return joueur
 
 def nb_manche():
-    """
-    Demande le nombre de manche et le renvoie en entier
+    """Demande le nombre de manche
+
+    Returns:
+        int: nombre de manche
     """
     nb_manche = int(input("Quel est le nombre de manche? - "))
     while nb_manche < 1 :
@@ -28,8 +35,13 @@ def nb_manche():
     return nb_manche
 
 def couleur_joueur(joueur: list) -> dict:
-    """
-    Attribue à chaque couleur le pseudo d'un joueur et les renvoie dictionnaire
+    """Attribue à chaque couleur le pseudo d'un joueur
+
+    Args:
+        joueur (list): liste des pseudo des joueurs
+
+    Returns:
+        dict: dictionnaire avec comme cle une couleur et comme valeur le pseudo d'un joueur
     """
     couleurs, d = ["R", "J", "V", "B"], {}
     if len(joueur) == 2:
@@ -40,7 +52,13 @@ def couleur_joueur(joueur: list) -> dict:
     return d
 
 def capture(t: list, x: int, y: int) -> None:
-    """Capture les billes adjacentes de couleurs différentes et les change en couleur de la bille jouée"""
+    """Capture les billes adjacentes de couleurs différentes et les change en couleur de la bille jouée
+
+    Args:
+        t (list): tableau a double entree
+        x (int): coordonnée vertical de la couleur
+        y (int): coordonnée horizontal de la couleur
+    """
     couleur = t[x][y]
     directions = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
     captures = []
@@ -202,6 +220,15 @@ def case_jouable(t: list, x: int, y: int, ia: bool):
     return False
 
 def obtenir_coordonnees(t: list, alea: bool):
+    """Demande les coordonnés de la case joué a l'utilisateur
+
+    Args:
+        t (list): tableau a double entrée
+        alea (bool): True si ia False sinon
+
+    Returns:
+        tuple: coordonnées x, y
+    """
     if alea:
         x, y = randint(0, 7), randint(0, 7)
         while not(case_jouable(t,x,y,True)):
@@ -214,6 +241,11 @@ def obtenir_coordonnees(t: list, alea: bool):
         return x, y
 
 def ia_alea():
+    """Demande si l'utilisateur veut une ia aléatoire ou non
+
+    Returns:
+        bool: True si ia False sinon
+    """
     a = str(input("ia aléatoire ? oui ou non - ")).strip().lower()
     while a not in ("oui","non"):
         a = str(input("ia aléatoire ? oui ou non - ")).strip().lower()
@@ -234,20 +266,20 @@ def tableau_depart():
 if __name__ == '__main__':
     k = 0 #compteur de manche
     d_g = {} #dictionnaire du score de la partie
-    nb_j, nb_m, alea = nb_joueur(),nb_manche(),ia_alea()
-    p = pseudo(nb_j)
-    c_j = couleur_joueur(p)
+    nb_j, nb_m, alea = nb_joueur(),nb_manche(),ia_alea() #nombre de joueur, nombre de manche et ia alea ou non
+    p = pseudo(nb_j) #pseudo joueur
+    c_j = couleur_joueur(p) #dictionnaire couleur -> joueur
     while k < nb_m:
-        t_c = open_game(c_j,list(c_j.keys()))
-        t = tableau_depart()
+        t_c = open_game(c_j,list(c_j.keys())) #tableau de couleur
+        t = tableau_depart() #tableau de jeu de départ
         print("Manche numéro", k+1, "sur", nb_m)
         while sum(compte_couleur(t).values()) != 64:
-            c = t_c[0]
-            affichage_tableau(t)
+            c = t_c[0] 
+            affichage_tableau(t) 
             print("Tour de ", c_j[c],"qui est ",c,".")
             x, y = obtenir_coordonnees(t,alea)
-            capture(couleur_jouee(t, x, y, c),x ,y)
-            t_c = tourne_tableau(t_c)
+            capture(couleur_jouee(t, x, y, c),x ,y) #modifie le tableau en fonction de la case joué
+            t_c = tourne_tableau(t_c) 
         affichage_tableau(t)
         g = gagnant(compte_couleur(t))
         d_g = compte_couleur(t) if k == 0 else additionne_dict(d_g, compte_couleur(t))
