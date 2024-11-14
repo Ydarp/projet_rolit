@@ -72,8 +72,8 @@ def couleur_jouee(t: list, x: int, y: int, c: str):
 
     Args:
         t (list): tableau a double entrée
-        x (int): coordonnée horizontale de la couleur
-        y (int): coordonnée verticale de la couleur
+        x (int): coordonnée vertical de la couleur
+        y (int): coordonnée horizontal de la couleur
         c (str): couleur 
 
     Returns:
@@ -142,19 +142,44 @@ def additionne_dict(d1: dict,d2: dict):
         r[cle] = d1[cle] + d2[cle]
     return r
 
+def case_jouable(t: list, x: int, y: int):
+    """Détermine si t[x][y] est jouable
+
+    Args:
+        t (list): tableau a double entree
+        x (int): coordonnée vertical
+        y (int): coordonnée horizontal
+
+    Returns:
+        bool: True si t[x][y] est jouable, False sinon
+    """
+    if (0 > x or 7 < x) or (0 > y or 7 < y):
+        print("Case pas dans le tableau. Réessayez.")
+        return False
+    elif t[x][y] is not None:
+        print("Case déjà occupée. Réessayez.")
+        return False
+    for dx in (-1, 0, 1):
+        for dy in (-1, 0, 1):
+            if dx == 0 and dy == 0: #case jouée
+                continue 
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < 8 and 0 <= ny < 8 and t[nx][ny] is not None: #vérifie si t[nx][ny] est dans le tableau et est vide
+                return True
+    print("Case pas adjacente a une couleur. Réessayez.")
+    return False
+
 def obtenir_coordonnees(t: list, alea: bool):
     if alea:
         x, y = randint(0, 7), randint(0, 7)
-        while t[x][y] is not None:
+        while not(case_jouable(t,x,y)):
             x, y = randint(0, 7), randint(0, 7)
         return x, y
     else:
         x, y = int(input("Coordonnée verticale de la couleur jouée: ")), int(input("Coordonnée horizontale de la couleur jouée: "))
-        while t[x][y] is not None:
-            print("Case déjà occupée. Réessayez.")
+        while not(case_jouable(t,x,y)):
             x, y = int(input("Coordonnée verticale: ")), int(input("Coordonnée horizontale: "))
         return x, y
-
 
 def ia_alea():
     a = str(input("ia aléatoire ? oui ou non - ")).strip().lower()
