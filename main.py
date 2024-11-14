@@ -159,20 +159,21 @@ def tourne_tableau(t: list):
     t.append(t.pop(0))
     return t
 
-def gagnant(d: dict):
+def valeur_dict_plus_grande(d: dict):
     """Détermine qu'elle cle du dictionnaire a la plus grande valeure
 
     Args:
         d (dict): dictionnaire
 
     Returns:
-        tuple: (c: str,v: int)
+        list: tableau contenant les cle avec la plus grande valeur
     """
-    v, c = 0, ""
+    max_valeur = max(d.values())
+    c_max = []
     for cle, val in d.items():
-        if val > v:
-            v, c = val, cle
-    return c, v  
+        if val == max_valeur:
+            c_max.append(cle)
+    return c_max
  
 def additionne_dict(d1: dict,d2: dict):
     """Additionne les valeures de 2 dictionnaires avec les mêmes clés, avec les clés correspondantent. 
@@ -252,6 +253,21 @@ def ia_alea():
     if a == "oui":
         return True
     return False
+    
+def gagant_partie(d1: dict, d2: dict):
+    """_summary_
+
+    Args:
+        d1 (dict): _description_
+        d2 (dict): _description_
+
+    Returns:
+        list:
+    """
+    g = valeur_dict_plus_grande(d1) #gagnant de la partie par manche
+    if len(g) > 1:
+        g = valeur_dict_plus_grande(d2) #gagnant de la partie par point
+    return g
 
 def tableau_depart():
     """tableau de départ
@@ -269,6 +285,7 @@ if __name__ == '__main__':
     nb_j, nb_m, alea = nb_joueur(),nb_manche(),ia_alea() #nombre de joueur, nombre de manche et ia alea ou non
     p = pseudo(nb_j) #pseudo joueur
     c_j = couleur_joueur(p) #dictionnaire couleur -> joueur
+    d_g_p = {c: 0 for c in list(c_j.keys())}
     while k < nb_m:
         t_c = open_game(c_j,list(c_j.keys())) #tableau de couleur
         t = tableau_depart() #tableau de jeu de départ
@@ -281,10 +298,11 @@ if __name__ == '__main__':
             capture(couleur_jouee(t, x, y, c),x ,y) #modifie le tableau en fonction de la case joué
             t_c = tourne_tableau(t_c) 
         affichage_tableau(t)
-        g = gagnant(compte_couleur(t))
-        d_g = compte_couleur(t) if k == 0 else additionne_dict(d_g, compte_couleur(t))
-        print(c_j[g[0]],"a gagné la manche avec un score de", g[1])
+        stat = compte_couleur(t) #dictionnaire des stat de la manche
+        g = valeur_dict_plus_grande(stat) #tableau contenant le gagnant de la manche
+        d_g = compte_couleur(t) if k == 0 else additionne_dict(d_g, compte_couleur(t)) #dictionnaire nombre de point
+        d_g_p[g[0]] += 1 #dictionnaire du nombre de manche gagnée
+        print(c_j[g[0]],"a gagné la manche avec un score de", stat[g[0]])
         k += 1
-    g = gagnant(d_g)
-    print(c_j[g[0]],"a gagné la partie avec un score de", g[1])
-    
+    g = gagant_partie(d_g_p, d_g)
+    print(c_j[g[0]],"a gagné la partie avec un score de", d_g[g[0]], "\n Voici le nombre de point :", d_g, "\n Voici le nombre de manche gagnée :", d_g_p)
