@@ -91,6 +91,16 @@ def compte_couleur(t):
     return compteur
 
 def couleur_affichage(t: list, x: int, y: int):
+    """Retourne la couleur de t[x][y]
+
+    Args:
+        t (list): tableau a double entrée
+        x (int): coordonnee vertical de la couleur
+        y (int): coordonnee horizontal de la couleur
+
+    Returns:
+        str: couleur de t[x][y]
+    """
     c = t[x][y]
     if c == "R":
         return "\x1b[31m"
