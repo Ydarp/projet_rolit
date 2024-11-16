@@ -1,8 +1,10 @@
 from random import randint
 
 def nb_joueur():
-    """
-    Demande le nombre de joueur et le renvoie en entier entre 1 et 4
+    """Demande le nombre de joueur
+
+    Returns:
+        int: nombre de joueur
     """
     nb_joueur = int(input("Quel est le nombre de joueur? - "))
     while nb_joueur not in (2, 3, 4):
