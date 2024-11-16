@@ -10,8 +10,13 @@ def nb_joueur():
     return nb_joueur
 
 def pseudo(nb: int) :
-    """
-    Demande le pseudo de chaque joueur et les renvoies dans une liste
+    """Demande le pseudo de chaque joueur
+
+    Args:
+        nb (int): nombre de joueur
+
+    Returns:
+        list: tableau des pseudo
     """
     joueur = []
     for i in range (nb):
@@ -19,8 +24,10 @@ def pseudo(nb: int) :
     return joueur
 
 def nb_manche():
-    """
-    Demande le nombre de manche et le renvoie en entier
+    """Demande le nombre de manche
+
+    Returns:
+        int: nombre de manche
     """
     nb_manche = int(input("Quel est le nombre de manche? - "))
     while nb_manche < 1 :
@@ -28,8 +35,13 @@ def nb_manche():
     return nb_manche
 
 def couleur_joueur(joueur: list) -> dict:
-    """
-    Attribue à chaque couleur le pseudo d'un joueur et les renvoie dictionnaire
+    """Attribue à chaque couleur le pseudo d'un joueur
+
+    Args:
+        joueur (list): liste des pseudo des joueurs
+
+    Returns:
+        dict: dictionnaire avec comme cle une couleur et comme valeur le pseudo d'un joueur
     """
     couleurs, d = ["R", "J", "V", "B"], {}
     if len(joueur) == 2:
@@ -40,7 +52,13 @@ def couleur_joueur(joueur: list) -> dict:
     return d
 
 def capture(t: list, x: int, y: int) -> None:
-    """Capture les billes adjacentes de couleurs différentes et les change en couleur de la bille jouée"""
+    """Capture les billes adjacentes de couleurs différentes et les change en couleur de la bille jouée
+
+    Args:
+        t (list): tableau a double entree
+        x (int): coordonnée vertical de la couleur
+        y (int): coordonnée horizontal de la couleur
+    """
     couleur = t[x][y]
     directions = [(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)]
     captures = []
@@ -69,21 +87,6 @@ def compte_couleur(t):
             if c in compteur:
                 compteur[c] += 1
     return compteur
-
-def couleur_jouee(t: list, x: int, y: int, c: str):
-    """Remplace t[x][y] par c
-
-    Args:
-        t (list): tableau a double entrée
-        x (int): coordonnée vertical de la couleur
-        y (int): coordonnée horizontal de la couleur
-        c (str): couleur 
-
-    Returns:
-        list: tableau avec la couleur jouée
-    """
-    t[x][y] = c
-    return t
 
 def couleur_affichage(t: list, x: int, y: int):
     c = t[x][y]
@@ -128,33 +131,22 @@ def open_game(d: dict, t: list):
     for i in range(dc):
         t = tourne_tableau(t)
     return t
-        
-def tourne_tableau(t: list):
-    """met le premier indice du tableau a la fin
 
-    Args:
-        t (list): tableau a double entree
-
-    Returns:
-        t (list): tableau de couleur
-    """
-    t.append(t.pop(0))
-    return t
-
-def gagnant(d: dict):
+def valeur_dict_plus_grande(d: dict):
     """Détermine qu'elle cle du dictionnaire a la plus grande valeure
 
     Args:
         d (dict): dictionnaire
 
     Returns:
-        tuple: (c: str,v: int)
+        list: tableau contenant les cle avec la plus grande valeur
     """
-    v, c = 0, ""
+    max_valeur = max(d.values())
+    c_max = []
     for cle, val in d.items():
-        if val > v:
-            v, c = val, cle
-    return c, v  
+        if val == max_valeur:
+            c_max.append(cle)
+    return c_max
  
 def additionne_dict(d1: dict,d2: dict):
     """Additionne les valeures de 2 dictionnaires avec les mêmes clés, avec les clés correspondantent. 
@@ -202,6 +194,15 @@ def case_jouable(t: list, x: int, y: int, ia: bool):
     return False
 
 def obtenir_coordonnees(t: list, alea: bool):
+    """Demande les coordonnés de la case joué a l'utilisateur
+
+    Args:
+        t (list): tableau a double entrée
+        alea (bool): True si ia False sinon
+
+    Returns:
+        tuple: coordonnées x, y
+    """
     if alea:
         x, y = randint(0, 7), randint(0, 7)
         while not(case_jouable(t,x,y,True)):
@@ -214,12 +215,32 @@ def obtenir_coordonnees(t: list, alea: bool):
         return x, y
 
 def ia_alea():
+    """Demande si l'utilisateur veut une ia aléatoire ou non
+
+    Returns:
+        bool: True si ia False sinon
+    """
     a = str(input("ia aléatoire ? oui ou non - ")).strip().lower()
     while a not in ("oui","non"):
         a = str(input("ia aléatoire ? oui ou non - ")).strip().lower()
     if a == "oui":
         return True
     return False
+    
+def gagant_partie(d1: dict, d2: dict):
+    """_summary_
+
+    Args:
+        d1 (dict): _description_
+        d2 (dict): _description_
+
+    Returns:
+        list:
+    """
+    g = valeur_dict_plus_grande(d1) #gagnant de la partie par manche
+    if len(g) > 1:
+        g = valeur_dict_plus_grande(d2) #gagnant de la partie par point
+    return g
 
 def tableau_depart():
     """tableau de départ
@@ -231,28 +252,73 @@ def tableau_depart():
     t[3][3],t[3][4],t[4][3],t[4][4] = "R","J","B","V"
     return t
 
-if __name__ == '__main__':
-    k = 0 #compteur de manche
-    d_g = {} #dictionnaire du score de la partie
-    nb_j, nb_m, alea = nb_joueur(),nb_manche(),ia_alea()
-    p = pseudo(nb_j)
-    c_j = couleur_joueur(p)
-    while k < nb_m:
-        t_c = open_game(c_j,list(c_j.keys()))
-        t = tableau_depart()
+def init_partie():
+    """initialisation de la partie (demande le nombre de joueur, le nombre de manche, l'ia ou non, le pseudo des joueurs)
+
+    Returns:
+        tuple: nombre de joueur, ia ou non, couleur -> pseudo, nombre de point, nombre de manche gagnée
+    """
+    nb_j, nb_m, alea = nb_joueur(),nb_manche(),ia_alea() #nombre de joueur, nombre de manche et ia alea ou non
+    p = pseudo(nb_j) #pseudo joueur
+    c_j = couleur_joueur(p) #dictionnaire couleur -> joueur
+    points_gagnes = {c: 0 for c in list(c_j.keys())}
+    manches_gagnees = {c: 0 for c in list(c_j.keys())} #dictionnaire nombre de manche gagnée
+    return nb_m, alea, c_j, points_gagnes, manches_gagnees
+
+def jouer_manche(t: list, c_j: dict, alea: bool):
+    """joue une manche
+
+    Args:
+        t (list): tableau de départ
+        c_j (dict): couleur -> pseudo
+        alea (bool): True si ia False sinon
+
+    Returns:
+        _type_: _description_
+    """
+    t_c = open_game(c_j,list(c_j.keys())) #tableau de couleur
+    while sum(compte_couleur(t).values()) != 64:
+        c = t_c[0] 
+        affichage_tableau(t) 
+        print("Tour de ", c_j[c],"qui est ",c,".")
+        x, y = obtenir_coordonnees(t,alea)
+        t[x][y] = c
+        capture(t,x,y)
+        t_c = t_c[1:] + [t_c[0]]
+    return t
+
+def afficher_resultat_manche(score: dict, manches_gagnees: dict, c_j: dict):
+    """affiche le gagnant de la manche et augmente le nombre de manche gagnée
+
+    Args:
+        score (dict): nombre de point de chaque couleur
+        manches_gagnees (dict): nombre de manche gagnée par chaque couleur
+        c_j (dict): couleur -> pseudo
+    """
+    g = valeur_dict_plus_grande(score) #gagnant de la manche
+    manches_gagnees[g[0]] += 1
+    print(c_j[g[0]],"a gagné la manche avec un score de", stat[g[0]])    
+
+def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
+    """affiche le gagnant de la partie
+
+    Args:
+        score (dict): nombre de point de chaque couleur
+        manches_gagnees (dict): nombre de manche gagnée par chaque couleur
+        c_j (dict): couleur -> pseudo
+    """
+    g = gagant_partie(score, manches_gagnees) #gagnant de la partie
+    print(c_j[g[0]],"a gagné la partie avec un score de", stat[g[0]], "\n Voici le nombre de point :", score, "\n Voici le nombre de manche gagnée :", manches_gagnees)
+
+def main():
+    """fonction principale de jeu"""
+    nb_m, alea, c_j, score, manches_gagnees = init_partie()
+    for k in range(nb_m):
         print("Manche numéro", k+1, "sur", nb_m)
-        while sum(compte_couleur(t).values()) != 64:
-            c = t_c[0]
-            affichage_tableau(t)
-            print("Tour de ", c_j[c],"qui est ",c,".")
-            x, y = obtenir_coordonnees(t,alea)
-            capture(couleur_jouee(t, x, y, c),x ,y)
-            t_c = tourne_tableau(t_c)
+        t = jouer_manche(tableau_depart(), c_j, alea)
         affichage_tableau(t)
-        g = gagnant(compte_couleur(t))
-        d_g = compte_couleur(t) if k == 0 else additionne_dict(d_g, compte_couleur(t))
-        print(c_j[g[0]],"a gagné la manche avec un score de", g[1])
-        k += 1
-    g = gagnant(d_g)
-    print(c_j[g[0]],"a gagné la partie avec un score de", g[1])
+        afficher_resultat_manche(score, manches_gagnees, c_j)
+    afficher_resultat_partie(score, manches_gagnees, c_j)
     
+if __name__ == '__main__':
+    main()
