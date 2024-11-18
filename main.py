@@ -1,4 +1,14 @@
-from random import randint
+from random import randint, shuffle
+
+def tableau_depart():
+    """tableau de départ
+
+    Returns:
+        t (list): tableau a double entrée
+    """
+    t = [[None for i in range(8)] for i in range(8)]
+    t[3][3],t[3][4],t[4][3],t[4][4] = "R","J","B","V"
+    return t
 
 def nb_joueur():
     """Demande le nombre de joueur
@@ -129,21 +139,6 @@ def affichage_tableau(t: list):
                 print(t[i][j-1], " | ", end="")
         print()
 
-def open_game(d: dict, t: list):
-    """tourne t un nombre de fois aléartoire
-
-    Args:
-        d (dict): dictionnaire qui attribut une couleur a chaque joueur
-        t (list): tabeau de couleur
-
-    Returns:
-        list: tableau de couleur
-    """
-    dc = randint(1,4)
-    for i in range(dc):
-        t = t[1:] + [t[0]]
-    return t
-
 def valeur_dict_plus_grande(d: dict):
     """Détermine qu'elle cle du dictionnaire a la plus grande valeure
 
@@ -254,27 +249,19 @@ def gagant_partie(d1: dict, d2: dict):
         g = valeur_dict_plus_grande(d2) #gagnant de la partie par point
     return g
 
-def tableau_depart():
-    """tableau de départ
-
-    Returns:
-        t (list): tableau a double entrée
-    """
-    t = [[None for i in range(8)] for i in range(8)]
-    t[3][3],t[3][4],t[4][3],t[4][4] = "R","J","B","V"
-    return t
 
 def init_partie():
     """initialisation de la partie (demande le nombre de joueur, le nombre de manche, l'ia ou non, le pseudo des joueurs)
 
     Returns:
-        tuple: nombre de joueur, ia ou non, couleur -> pseudo, nombre de point, nombre de manche gagnée
+        tuple: nombre de joueur, ia ou non, couleur -> pseudo, nombre de manche gagnée, tableau de départ
     """
+    t = tableau_depart()
     nb_j, nb_m, alea = nb_joueur(),nb_manche(),ia_alea() #nombre de joueur, nombre de manche et ia alea ou non
     p = pseudo(nb_j) #pseudo joueur
     c_j = couleur_joueur(p) #dictionnaire couleur -> joueur
     manches_gagnees = {c: 0 for c in list(c_j.keys())} #dictionnaire nombre de manche gagnée
-    return nb_m, alea, c_j, manches_gagnees
+    return nb_m, alea, c_j, manches_gagnees, t
 
 def jouer_manche(t: list, c_j: dict, alea: bool):
     """joue une manche
@@ -283,11 +270,8 @@ def jouer_manche(t: list, c_j: dict, alea: bool):
         t (list): tableau de départ
         c_j (dict): couleur -> pseudo
         alea (bool): True si ia False sinon
-
-    Returns:
-        _type_: _description_
     """
-    t_c = open_game(c_j,list(c_j.keys())) #tableau de couleur
+    t_c = shuffle(list(c_j.keys())) #tableau de couleur
     while sum(compte_couleur(t).values()) != 64:
         c = t_c[0] 
         affichage_tableau(t) 
@@ -296,7 +280,6 @@ def jouer_manche(t: list, c_j: dict, alea: bool):
         t[x][y] = c
         capture(t,x,y)
         t_c = t_c[1:] + [t_c[0]]
-    return t
 
 def afficher_resultat_manche(score: dict, manches_gagnees: dict, c_j: dict):
     """affiche le gagnant de la manche et augmente le nombre de manche gagnée
@@ -323,10 +306,10 @@ def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
 
 def main():
     """fonction principale de jeu"""
-    nb_m, alea, c_j, manches_gagnees = init_partie()
+    nb_m, alea, c_j, manches_gagnees, t = init_partie()
     for k in range(nb_m):
         print("Manche numéro", k+1, "sur", nb_m)
-        t = jouer_manche(tableau_depart(), c_j, alea)
+        jouer_manche(t, c_j, alea)
         affichage_tableau(t)
         score_m = compte_couleur(t)
         afficher_resultat_manche(score_m, manches_gagnees, c_j)
