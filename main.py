@@ -273,9 +273,8 @@ def init_partie():
     nb_j, nb_m, alea = nb_joueur(),nb_manche(),ia_alea() #nombre de joueur, nombre de manche et ia alea ou non
     p = pseudo(nb_j) #pseudo joueur
     c_j = couleur_joueur(p) #dictionnaire couleur -> joueur
-    points_gagnes = {c: 0 for c in list(c_j.keys())}
     manches_gagnees = {c: 0 for c in list(c_j.keys())} #dictionnaire nombre de manche gagnée
-    return nb_m, alea, c_j, points_gagnes, manches_gagnees
+    return nb_m, alea, c_j, manches_gagnees
 
 def jouer_manche(t: list, c_j: dict, alea: bool):
     """joue une manche
@@ -324,13 +323,15 @@ def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
 
 def main():
     """fonction principale de jeu"""
-    nb_m, alea, c_j, score, manches_gagnees = init_partie()
+    nb_m, alea, c_j, manches_gagnees = init_partie()
     for k in range(nb_m):
         print("Manche numéro", k+1, "sur", nb_m)
         t = jouer_manche(tableau_depart(), c_j, alea)
         affichage_tableau(t)
-        afficher_resultat_manche(score, manches_gagnees, c_j)
-    afficher_resultat_partie(score, manches_gagnees, c_j)
+        score_m = compte_couleur(t)
+        afficher_resultat_manche(score_m, manches_gagnees, c_j)
+        score_p = score_m if k == 0 else additionne_dict(score_p,score_m)
+    afficher_resultat_partie(score_p, manches_gagnees, c_j)
     
 if __name__ == '__main__':
     main()
