@@ -141,7 +141,7 @@ def open_game(d: dict, t: list):
     """
     dc = randint(1,4)
     for i in range(dc):
-        t = tourne_tableau(t)
+        t = t[1:] + [t[0]]
     return t
 
 def valeur_dict_plus_grande(d: dict):
@@ -309,7 +309,7 @@ def afficher_resultat_manche(score: dict, manches_gagnees: dict, c_j: dict):
     """
     g = valeur_dict_plus_grande(score) #gagnant de la manche
     manches_gagnees[g[0]] += 1
-    print(c_j[g[0]],"a gagné la manche avec un score de", stat[g[0]])    
+    print(c_j[g[0]],"a gagné la manche avec un score de", score[g[0]])    
 
 def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
     """affiche le gagnant de la partie
@@ -320,7 +320,7 @@ def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
         c_j (dict): couleur -> pseudo
     """
     g = gagant_partie(score, manches_gagnees) #gagnant de la partie
-    print(c_j[g[0]],"a gagné la partie avec un score de", stat[g[0]], "\n Voici le nombre de point :", score, "\n Voici le nombre de manche gagnée :", manches_gagnees)
+    print(c_j[g[0]],"a gagné la partie avec un score de", score[g[0]], "\n Voici le nombre de point :", score, "\n Voici le nombre de manche gagnée :", manches_gagnees)
 
 def main():
     """fonction principale de jeu"""
