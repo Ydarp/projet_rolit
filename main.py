@@ -1,5 +1,5 @@
 from random import randint, shuffle
-
+#code
 def tableau_depart():
     """tableau de départ
 
