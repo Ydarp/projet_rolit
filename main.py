@@ -271,8 +271,7 @@ def jouer_manche(t: list, c_j: dict, alea: bool):
         c_j (dict): couleur -> pseudo
         alea (bool): True si ia False sinon
     """
-    t_c = list(c_j.keys()) #tableau de couleur
-    shuffle(t_c)
+    t_c = shuffle(list(c_j.keys())) #tableau de couleur
     while sum(compte_couleur(t).values()) != 64:
         c = t_c[0] 
         affichage_tableau(t) 
