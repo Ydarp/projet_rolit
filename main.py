@@ -1,4 +1,4 @@
-from random import randint, shuffle
+import random
 #code
 def tableau_depart():
     """tableau de départ
@@ -211,9 +211,9 @@ def obtenir_coordonnees(t: list, alea: bool):
         tuple: coordonnées x, y
     """
     if alea:
-        x, y = randint(0, 7), randint(0, 7)
+        x, y = random.randint(0, 7), random.randint(0, 7)
         while not(case_jouable(t,x,y,True)):
-            x, y = randint(0, 7), randint(0, 7)
+            x, y = random.randint(0, 7), random.randint(0, 7)
         return x, y
     else:
         x, y = int(input("Coordonnée verticale de la couleur jouée: ")), int(input("Coordonnée horizontale de la couleur jouée: "))
@@ -271,7 +271,7 @@ def jouer_manche(t: list, c_j: dict, alea: bool):
         alea (bool): True si ia False sinon
     """
     t_c = list(c_j.keys()) #tableau de couleur
-    shuffle(t_c)
+    random.shuffle(t_c)
     while sum(compte_couleur(t).values()) != 64:
         c = t_c[0] 
         affichage_tableau(t) 
