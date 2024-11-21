@@ -256,12 +256,11 @@ def init_partie():
     Returns:
         tuple: nombre de joueur, ia ou non, couleur -> pseudo, nombre de manche gagnée, tableau de départ
     """
-    t = tableau_depart()
     nb_j, nb_m, alea = nb_joueur(),nb_manche(),ia_alea() #nombre de joueur, nombre de manche et ia alea ou non
     p = pseudo(nb_j) #pseudo joueur
     c_j = couleur_joueur(p) #dictionnaire couleur -> joueur
     manches_gagnees = {c: 0 for c in list(c_j.keys())} #dictionnaire nombre de manche gagnée
-    return nb_m, alea, c_j, manches_gagnees, t
+    return nb_m, alea, c_j, manches_gagnees
 
 def jouer_manche(t: list, c_j: dict, alea: bool):
     """joue une manche
@@ -307,8 +306,9 @@ def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
 
 def main():
     """fonction principale de jeu"""
-    nb_m, alea, c_j, manches_gagnees, t = init_partie()
+    nb_m, alea, c_j, manches_gagnees = init_partie()
     for k in range(nb_m):
+        t = tableau_depart()
         print("Manche numéro", k+1, "sur", nb_m)
         jouer_manche(t, c_j, alea)
         affichage_tableau(t)
