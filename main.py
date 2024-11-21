@@ -301,7 +301,7 @@ def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
         manches_gagnees (dict): nombre de manche gagnée par chaque couleur
         c_j (dict): couleur -> pseudo
     """
-    g = gagant_partie(score, manches_gagnees) #gagnant de la partie
+    g = gagant_partie(manches_gagnees, score) #gagnant de la partie
     print(c_j[g[0]],"a gagné la partie avec un score de", score[g[0]], "\n Voici le nombre de point :", score, "\n Voici le nombre de manche gagnée :", manches_gagnees)
 
 def main():
