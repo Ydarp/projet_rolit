@@ -1,4 +1,5 @@
 import random
+import random
 #code
 def tableau_depart():
     """tableau de départ
@@ -227,7 +228,9 @@ def obtenir_coordonnees(t: list, alea: bool):
     """
     if alea:
         x, y = random.randint(0, 7), random.randint(0, 7)
+        x, y = random.randint(0, 7), random.randint(0, 7)
         while not(case_jouable(t,x,y,True)):
+            x, y = random.randint(0, 7), random.randint(0, 7)
             x, y = random.randint(0, 7), random.randint(0, 7)
         return x, y
     else:
@@ -375,12 +378,14 @@ def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
         c_j (dict): couleur -> pseudo
     """
     g = gagant_partie(manches_gagnees, score) #gagnant de la partie
+
     print(c_j[g[0]],"a gagné la partie avec un score de", score[g[0]], "\n Voici le nombre de point :", score, "\n Voici le nombre de manche gagnée :", manches_gagnees)
 
 def main():
     """fonction principale de jeu"""
     nb_m, alea, c_j, manches_gagnees, contre_ia = init_partie()
     for k in range(nb_m):
+
         t = tableau_depart()
         print("Manche numéro", k+1, "sur", nb_m)
         jouer_manche(t, c_j, alea,contre_ia)
