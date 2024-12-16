@@ -263,9 +263,16 @@ def demande_contre_ia():
         return True
     return False
 
-def capture_ia(t, ia):
+def capture_ia(t: list, ia: str):
+    """Execute la fontction capture pour la couleur de l'ia en ayant le plus de couleur sur le plateau.
+
+    Args:
+        t (list): _description_
+        ia (str): _description_
+    """
     point = 0
     x,y = 0,0
+    list_alea = []
     for i in range(len(t)):
         for j in range(len(t)):
             tclone = clone(t)
@@ -274,9 +281,13 @@ def capture_ia(t, ia):
                 capture(tclone,i,j)
                 if compte_couleur(tclone)[ia] > point:
                     point = compte_couleur(tclone)[ia]
-                    x,y = i,j
-    t[x][y] = ia
-    capture(t,x,y)
+                    list_alea = []
+                    list_alea.append((i,j))
+                elif compte_couleur(tclone)[ia] == point:
+                    list_alea.append((i,j))
+    indice = random.randint(0,len(list_alea) - 1)
+    t[list_alea[indice][0]][list_alea[indice][1]] = ia
+    capture(t,list_alea[indice][0],list_alea[indice][1])
 
 def gagant_partie(d1: dict, d2: dict):
     """_summary_
