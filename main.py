@@ -1,4 +1,4 @@
-from random import randint, shuffle
+import random
 #code
 def tableau_depart():
     """tableau de départ
@@ -99,6 +99,21 @@ def compte_couleur(t):
             if c in compteur:
                 compteur[c] += 1
     return compteur
+
+def clone(t):
+    """
+    Créer un clone du plateau.
+
+    Args:
+        t (list): tableau a double entrée
+    Returns:
+        tclone (list): tableau a double entée
+    """
+    tclone = tableau_depart()
+    for i in range(len(t)):
+        for j in range(len(t)):
+            tclone[i][j] = t[i][j]
+    return tclone
 
 def couleur_affichage(t: list, x: int, y: int):
     """Retourne la couleur de t[x][y]
@@ -211,9 +226,9 @@ def obtenir_coordonnees(t: list, alea: bool):
         tuple: coordonnées x, y
     """
     if alea:
-        x, y = randint(0, 7), randint(0, 7)
+        x, y = random.randint(0, 7), random.randint(0, 7)
         while not(case_jouable(t,x,y,True)):
-            x, y = randint(0, 7), randint(0, 7)
+            x, y = random.randint(0, 7), random.randint(0, 7)
         return x, y
     else:
         x, y = int(input("Coordonnée verticale de la couleur jouée: ")), int(input("Coordonnée horizontale de la couleur jouée: "))
@@ -233,7 +248,36 @@ def ia_alea():
     if a == "oui":
         return True
     return False
-    
+
+def demande_contre_ia():
+    """Demande si l'utilisateur veut jouer contre une ia
+
+    Returns:
+        bool: True si ia False sinon
+    """
+
+    a = str(input("contre ia ? oui ou non - ")).strip().lower()
+    while a not in ("oui","non"):
+        a = str(input("contre ia ? oui ou non - ")).strip().lower()
+    if a == "oui":
+        return True
+    return False
+
+def capture_ia(t, ia):
+    point = 0
+    x,y = 0,0
+    for i in range(len(t)):
+        for j in range(len(t)):
+            tclone = clone(t)
+            if case_jouable(t, i, j, True):
+                tclone[i][j] = ia
+                capture(tclone,i,j)
+                if compte_couleur(tclone)[ia] > point:
+                    point = compte_couleur(tclone)[ia]
+                    x,y = i,j
+    t[x][y] = ia
+    capture(t,x,y)
+
 def gagant_partie(d1: dict, d2: dict):
     """_summary_
 
@@ -256,14 +300,13 @@ def init_partie():
     Returns:
         tuple: nombre de joueur, ia ou non, couleur -> pseudo, nombre de manche gagnée, tableau de départ
     """
-    t = tableau_depart()
-    nb_j, nb_m, alea = nb_joueur(),nb_manche(),ia_alea() #nombre de joueur, nombre de manche et ia alea ou non
+    nb_j, nb_m, alea, contre_ia = nb_joueur(),nb_manche(),ia_alea(),demande_contre_ia() #nombre de joueur, nombre de manche et ia alea ou non
     p = pseudo(nb_j) #pseudo joueur
     c_j = couleur_joueur(p) #dictionnaire couleur -> joueur
     manches_gagnees = {c: 0 for c in list(c_j.keys())} #dictionnaire nombre de manche gagnée
-    return nb_m, alea, c_j, manches_gagnees, t
+    return nb_m, alea, c_j, manches_gagnees , contre_ia
 
-def jouer_manche(t: list, c_j: dict, alea: bool):
+def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool):
     """joue une manche
 
     Args:
@@ -272,15 +315,33 @@ def jouer_manche(t: list, c_j: dict, alea: bool):
         alea (bool): True si ia False sinon
     """
     t_c = list(c_j.keys()) #tableau de couleur
-    shuffle(t_c)
+    random.shuffle(t_c)
+    joueur = t_c[random.randint(0,len(t_c)-1)]
+    if joueur == t_c[0] and contre_ia:
+        alea_temp = not alea
+    else:
+        alea_temp = alea
     while sum(compte_couleur(t).values()) != 64:
         c = t_c[0] 
         affichage_tableau(t) 
         print("Tour de ", c_j[c],"qui est ",c,".")
-        x, y = obtenir_coordonnees(t,alea)
-        t[x][y] = c
-        capture(t,x,y)
+        if contre_ia and not alea:
+            if joueur == t_c[0]:
+                x, y = obtenir_coordonnees(t,False)
+                t[x][y] = c
+                capture(t,x,y)
+            else:
+                capture_ia(t, t_c[0])
+        else:
+            x, y = obtenir_coordonnees(t,alea_temp)
+            t[x][y] = c
+            capture(t,x,y)
         t_c = t_c[1:] + [t_c[0]]
+        if alea and contre_ia:
+            if joueur == t_c[0]:
+                alea_temp = False
+            else:
+                alea_temp = True
 
 def afficher_resultat_manche(score: dict, manches_gagnees: dict, c_j: dict):
     """affiche le gagnant de la manche et augmente le nombre de manche gagnée
@@ -302,15 +363,16 @@ def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
         manches_gagnees (dict): nombre de manche gagnée par chaque couleur
         c_j (dict): couleur -> pseudo
     """
-    g = gagant_partie(score, manches_gagnees) #gagnant de la partie
+    g = gagant_partie(manches_gagnees, score) #gagnant de la partie
     print(c_j[g[0]],"a gagné la partie avec un score de", score[g[0]], "\n Voici le nombre de point :", score, "\n Voici le nombre de manche gagnée :", manches_gagnees)
 
 def main():
     """fonction principale de jeu"""
-    nb_m, alea, c_j, manches_gagnees, t = init_partie()
+    nb_m, alea, c_j, manches_gagnees, contre_ia = init_partie()
     for k in range(nb_m):
+        t = tableau_depart()
         print("Manche numéro", k+1, "sur", nb_m)
-        jouer_manche(t, c_j, alea)
+        jouer_manche(t, c_j, alea,contre_ia)
         affichage_tableau(t)
         score_m = compte_couleur(t)
         afficher_resultat_manche(score_m, manches_gagnees, c_j)
