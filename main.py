@@ -1,5 +1,4 @@
 import random
-import random
 #code
 def tableau_depart():
     """tableau de départ
@@ -86,7 +85,7 @@ def capture(t: list, x: int, y: int) -> None:
     for cx, cy in captures:
         t[cx][cy] = couleur
 
-def compte_couleur(t):
+def compte_couleur(t: list):
     """Compte le nombre de pion de chaque couleur actuellement en jeu.
 
     Args:
@@ -101,7 +100,7 @@ def compte_couleur(t):
                 compteur[c] += 1
     return compteur
 
-def clone(t):
+def clone(t: list):
     """
     Créer un clone du plateau.
 
