@@ -6,6 +6,8 @@ HAUTEUR = 800
 ecart_2 = 120 #(800-H*4)/5
 ecart = 10
 H = 50
+xmin, ymin, xmax, ymax = ecart_2, H+ecart*3, ecart_2+H, H+ecart*3+H #valeur des coins du rectangle
+carre_1, carre_2, carre_3, carre_4 = (xmin, ymin, xmax, ymax), (xmin*2 + H, ymin, xmax*2, ymax), (xmin*3 + H*2, ymin, xmax*3, ymax), (xmin*4 + H*3, ymin, xmax*4, ymax)
 
 def afficher_text(text: str,x: int, y: int, couleur="black",tag=None):
     fltk.texte(x,y,text,couleur,ancrage="center", taille=20,tag=tag)
@@ -20,18 +22,16 @@ def fenetre_acceuil() -> None:
     fltk.texte(LARGEUR // 2, 40, "NOMBRES DE JOUEURS", ancrage="center",taille=20) #police= pour modifié la police et améliorer la visibilité
     
     # carré 1, 2, 3 et 4
-    ecart_2 = 120 #(800-H*4)/5
-    xmin, ymin, xmax, ymax = ecart_2, H+ecart*3, ecart_2+H, H+ecart*3+H #valeur des coins du rectangle
-    fltk.rectangle(xmin, ymin, xmax, ymax)
+    fltk.rectangle(carre_1[0], carre_1[1], carre_1[2], carre_1[3])
     fltk.texte(xmin + H//2, ymin + H//2,"1", ancrage="center")
     
-    fltk.rectangle(xmin*2 + H, ymin, xmax*2, ymax)
+    fltk.rectangle(carre_2[0], carre_2[1], carre_2[2], carre_2[3])
     fltk.texte(xmin*2 + H + H//2, ymin + H//2,"2", ancrage="center")
     
-    fltk.rectangle(xmin*3 + H*2, ymin, xmax*3, ymax)
+    fltk.rectangle(carre_3[0], carre_3[1], carre_3[2], carre_3[3])
     fltk.texte(xmin*3 + H*2 + H//2, ymin + H//2,"3", ancrage="center")
     
-    fltk.rectangle(xmin*4 + H*3, ymin, xmax*4, ymax)
+    fltk.rectangle(carre_4[0], carre_4[1], carre_4[2], carre_4[3])
     fltk.texte(xmin*4 + H*3 + H//2, ymin + H//2,"4", ancrage="center")
     
     #Nombre de manches
@@ -115,14 +115,23 @@ def modifie_dict_case_grise(case_grise, dict_case_grise):
         else:
             dict_case_grise[c] = "White"
     return dict_case_grise
+    
+def detecte_gris(d: dict):
+    for v in d.values():
+        if v == "Grey":
+            return True
+    return False
 
+def rectangle_text(carre, text, ancrage="center", taille=20, remplissage="white", tag=None):
+    fltk.rectangle(carre[0], carre[1], carre[2], carre[3], remplissage=remplissage, tag=tag)
+    fltk.texte(carre[0] + H// 2, carre[2] + H// 2, text, ancrage=ancrage, taille=taille, tag=tag)
+    
 def main():
     fenetre_acceuil()
     champ_actif = None
     texte_saisi = {"champ_manches": "", "champ_pseudo": ["", "", "", ""]}
     i = 0
-    dict_case_grise = {1: "White", 2:"White", 3:"White", 4:"White"}
-    xmin, ymin, xmax, ymax = ecart_2, H+ecart*3, ecart_2+H, H+ecart*3+H # 1,2,3 et 4
+    dict_case_grise = {carre_1: "White", carre_2:"White", carre_3:"White", carre_4:"White"}
     while True:
         ev = fltk.donne_ev()
         if ev:
@@ -136,26 +145,18 @@ def main():
                     champ_actif = "champ_pseudo"
                 if not (clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*8, LARGEUR - ecart, H*2 + ecart*8 + H) or clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9)):
                     champ_actif = None
-                if clique_dans_rectangle(xmin, ymin, xmax, ymax):
-                    case_grise = 1
+                if clique_dans_rectangle(carre_1[0], carre_1[1], carre_1[2], carre_1[3]):
+                    case_grise = carre_1
                     dict_case_grise = modifie_dict_case_grise(case_grise, dict_case_grise)
-                    fltk.rectangle(xmin, ymin, xmax, ymax, remplissage=dict_case_grise[case_grise], tag="1")
-                    fltk.texte(xmin + H//2, ymin + H//2,"1", ancrage="center")
-                if clique_dans_rectangle(xmin*2 + H, ymin, xmax*2, ymax):
-                    case_grise = 2
+                if clique_dans_rectangle(carre_2[0], carre_2[1], carre_2[2], carre_2[3]):
+                    case_grise = carre_2
                     dict_case_grise = modifie_dict_case_grise(case_grise, dict_case_grise)
-                    fltk.rectangle(xmin*2 + H, ymin, xmax*2, ymax, remplissage=dict_case_grise[case_grise], tag="2")
-                    fltk.texte(xmin*2 + H + H//2, ymin + H//2,"2", ancrage="center")
-                if clique_dans_rectangle(xmin*3 + H*2, ymin, xmax*3, ymax):
-                    case_grise = 3
+                if clique_dans_rectangle(carre_3[0], carre_3[1], carre_3[2], carre_3[3]):
+                    case_grise = carre_3
+                    dict_case_grise = modifie_dict_case_grise(case_grise, dict_case_grise) 
+                if clique_dans_rectangle(carre_4[0], carre_4[1], carre_4[2], carre_4[3]):
+                    case_grise = carre_4
                     dict_case_grise = modifie_dict_case_grise(case_grise, dict_case_grise)
-                    fltk.rectangle(xmin*3 + H*2, ymin, xmax*3, ymax, remplissage=dict_case_grise[case_grise], tag="3")
-                    fltk.texte(xmin*3 + H*2 + H//2, ymin + H//2,"3", ancrage="center")
-                if clique_dans_rectangle(xmin*4 + H*3, ymin, xmax*4, ymax):
-                    case_grise = 4
-                    dict_case_grise = modifie_dict_case_grise(case_grise, dict_case_grise)
-                    fltk.rectangle(xmin*4 + H*3, ymin, xmax*4, ymax, remplissage=dict_case_grise[case_grise], tag="4")
-                    fltk.texte(xmin*4 + H*3 + H//2, ymin + H//2,"4", ancrage="center")
             elif nom_ev == "Touche" and champ_actif:
                 if param_ev.keysym == "Return":
                     if champ_actif == "champ_pseudo":
@@ -175,6 +176,15 @@ def main():
                 break
         if texte_saisi["champ_manches"] or texte_saisi["champ_pseudo"][0] or texte_saisi["champ_pseudo"][1] or texte_saisi["champ_pseudo"][2] or texte_saisi["champ_pseudo"][3]:
             print(texte_saisi)
+        if detecte_gris(dict_case_grise):
+            fltk.efface("1")
+            fltk.efface("2")
+            fltk.efface("3")
+            fltk.efface("4")
+            rectangle_text(carre_1, "1", remplissage=dict_case_grise[carre_1], tag="1")
+            rectangle_text(carre_2, "2", remplissage=dict_case_grise[carre_2], tag="2")
+            rectangle_text(carre_3, "3", remplissage=dict_case_grise[carre_3], tag="3")
+            rectangle_text(carre_4, "4", remplissage=dict_case_grise[carre_4], tag="4")
         fltk.mise_a_jour()
         
 if __name__ == "__main__":
