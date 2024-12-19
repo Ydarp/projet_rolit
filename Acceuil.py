@@ -353,15 +353,20 @@ def main():
                             tag_champ_actif = f"case_champ_pseudo_{i+1}"
                         else:
                             largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i])
-                            if largeur > largeur_champ:
-                                taille[i] = taille[i] - 1 if taille[i] > 10 else 10
+                            if largeur > largeur_champ - 30:
+                                if taille[i] > 10:
+                                    taille[i] -= 1
+                                    valeur_saisi[champ_actif][i] += param_ev.char
                             else:     
                                 valeur_saisi[champ_actif][i] += param_ev.char
                     else:
                         if param_ev.char.isdigit():
                             largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche)
-                            if largeur > largeur_champ:
-                                taille_manche = taille_manche - 1 if taille_manche > 10 else 10
+                            if largeur > largeur_champ - 30:
+                                if taille_manche > 10:
+                                    taille_manche -= 1
+                                    valeur_saisi["champ_manches"] += param_ev.char
+                                    nb_manches += param_ev.char
                             else:
                                 valeur_saisi["champ_manches"] += param_ev.char
                                 nb_manches += param_ev.char
