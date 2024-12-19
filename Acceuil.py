@@ -371,25 +371,29 @@ def main() -> dict:
                         valeur_saisi[champ_actif] = valeur_saisi[champ_actif][:-1] 
                         nb_manches = nb_manches[:-1]
                 else:
-                    if champ_actif == "champ_pseudo":
-                        #passe a la prochaine case
-                        if param_ev.keysym == "Return":
+                    if champ_actif == "champ_pseudo" and param_ev.keysym != "space":
+                        if param_ev.keysym == "Return": #passe a la prochaine case
                             i = i + 1 if i < nb_joueurs-1 else 0
                             tag_champ_actif = f"case_champ_pseudo_{i+1}"
                         else:
-                            largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i])
-                            if largeur > largeur_champ - 30:
+                            largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Consolas")
+                            print(largeur, largeur_champ)
+                            if largeur > largeur_champ:
                                 if taille[i] > 10:
-                                    taille[i] -= 1
+                                    while largeur > largeur_champ:
+                                        taille[i] -= 1
+                                        largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Consolas") 
                                     valeur_saisi[champ_actif][i] += param_ev.char
-                            else:     
+                            else:
                                 valeur_saisi[champ_actif][i] += param_ev.char
                     else:
                         if param_ev.char.isdigit():
-                            largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche)
-                            if largeur > largeur_champ - 30:
+                            largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Consolas")
+                            if largeur > largeur_champ:
                                 if taille_manche > 10:
-                                    taille_manche -= 1
+                                    while largeur > largeur_champ:
+                                        taille_manche -= 1
+                                        largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Consolas")
                                     valeur_saisi["champ_manches"] += param_ev.char
                                     nb_manches += param_ev.char
                             else:
@@ -406,7 +410,7 @@ def main() -> dict:
                         fltk.texte(LARGEUR*9//16 if i == 0 else LARGEUR*11//16 if i == 1 else LARGEUR*13//16 if i == 2 else LARGEUR*15//16, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], police="Consolas", ancrage="center", taille=taille[i], tag=tag_champ_actif)
                 elif champ_actif == "champ_manches":
                     
-                    fltk.texte(LARGEUR - LARGEUR//4, H*2 + ecart*8 + H//2 , valeur_saisi["champ_manches"],police="Consolas", ancrage="center", taille=taille_manche, tag=tag_champ_actif)
+                    fltk.texte(LARGEUR - LARGEUR//4, H*2 + ecart*8 + H//2, valeur_saisi["champ_manches"],police="Consolas", ancrage="center", taille=taille_manche, tag=tag_champ_actif)
             elif nom_ev == "Quitte":
                 break
                 
