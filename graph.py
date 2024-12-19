@@ -3,7 +3,7 @@ import main,fltk, random
 LONGUEUR, LARGEUR = 800, 800
 TAILLE_CASE_X = 500 / 8
 TAILLE_CASE_Y = 500 / 8
-couleurs = {"R":"red","B":"blue","J":'yellow',"V":"green"}
+couleurs = {"R":"red","J":'yellow',"V":"green","B":"blue"}
 
 def grille():
     """
@@ -57,13 +57,13 @@ def capture_fenetre(t: list,couleur: str):
 
 def jouer(d: dict): #{"champ_manches": nb_manches, "champ_pseudo": pseudo,"nb_joueurs": nb_joueurs, "ia_alea": ia_alea, "ia_contre": ia_contre, "bonus": bonus}
     fltk.cree_fenetre(LONGUEUR,LARGEUR)
-    for i in range(d["champ_manches"]):
+    for i in range(int(d["champ_manches"])):
         t = main.tableau_depart()
         if d["bonus"]:
-            b = main.bonus(d["nb_joueurs"])
+            b = main.bonus(int(d["nb_joueurs"]))
         else:
             b = []
-        list_couleur = list(couleurs.keys())
+        list_couleur = list(main.couleur_joueur(d["champ_pseudo"]).keys())
         random.shuffle(list_couleur)
         grille()
         pion(t)
