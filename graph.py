@@ -48,9 +48,11 @@ def capture_fenetre(t,couleur):
 if __name__ == "__main__":
     fltk.cree_fenetre(LONGUEUR,LARGEUR)
     t = main.tableau_depart()
+    joueur = ["R","J","B","V"]
     while not main.end(t):
         grille()
         pion(t)
-        capture_fenetre(t,"R")
+        capture_fenetre(t,joueur[0])
+        joueur = joueur[1:] + [joueur[0]]
     fltk.attend_ev()
     fltk.ferme_fenetre()
