@@ -143,7 +143,7 @@ def pseudo_valide(d: dict, n: int):
             return False
     return True
 
-def main():
+def main() -> dict:
     fenetre_acceuil()
     taille_manche = 20
     champ_actif = None
@@ -374,14 +374,14 @@ def main():
                 fltk.efface(tag_champ_actif)
                 if champ_actif == "champ_pseudo":
                     if nb_joueurs == 2:
-                        fltk.texte(LARGEUR*5//8 if i == 0 else LARGEUR*7//8, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], ancrage="center", taille=taille[i], tag=tag_champ_actif)
+                        fltk.texte(LARGEUR*5//8 if i == 0 else LARGEUR*7//8, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], police="Consolas", ancrage="center", taille=taille[i], tag=tag_champ_actif)
                     elif nb_joueurs == 3:
-                        fltk.texte(LARGEUR*7//12 if i == 0 else LARGEUR*9//12 if i == 1 else LARGEUR*11//12, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], ancrage="center", taille=taille[i], tag=tag_champ_actif)
+                        fltk.texte(LARGEUR*7//12 if i == 0 else LARGEUR*9//12 if i == 1 else LARGEUR*11//12, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], police="Consolas", ancrage="center", taille=taille[i], tag=tag_champ_actif)
                     elif nb_joueurs == 4:
-                        fltk.texte(LARGEUR*9//16 if i == 0 else LARGEUR*11//16 if i == 1 else LARGEUR*13//16 if i == 2 else LARGEUR*15//16, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], ancrage="center", taille=taille[i], tag=tag_champ_actif)
+                        fltk.texte(LARGEUR*9//16 if i == 0 else LARGEUR*11//16 if i == 1 else LARGEUR*13//16 if i == 2 else LARGEUR*15//16, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], police="Consolas", ancrage="center", taille=taille[i], tag=tag_champ_actif)
                 elif champ_actif == "champ_manches":
                     
-                    fltk.texte(LARGEUR - LARGEUR//4, H*2 + ecart*8 + H//2 , valeur_saisi["champ_manches"], ancrage="center", taille=taille_manche, tag=tag_champ_actif)
+                    fltk.texte(LARGEUR - LARGEUR//4, H*2 + ecart*8 + H//2 , valeur_saisi["champ_manches"],police="Consolas", ancrage="center", taille=taille_manche, tag=tag_champ_actif)
             elif nom_ev == "Quitte":
                 break
                 
@@ -412,7 +412,7 @@ def main():
             rectangle_text(case_oui_bonus, "OUI", remplissage=dict_case_grise_oui_non_bonus[case_oui_bonus], tag_rectangle="case_oui_bonus", tag_text="text_oui_bonus", oui_non=True)
             rectangle_text(case_non_bonus, "NON", remplissage=dict_case_grise_oui_non_bonus[case_non_bonus], tag_rectangle="case_non_bonus", tag_text="text_non_bonus", oui_non=True)
         fltk.mise_a_jour() 
-    print(valeur_saisi)  
+    return valeur_saisi 
       
 if __name__ == "__main__":
     main()
