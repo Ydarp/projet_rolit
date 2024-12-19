@@ -1,4 +1,4 @@
-import main,fltk
+import main,fltk, random
 
 LONGUEUR, LARGEUR = 800, 800
 TAILLE_CASE_X = 500 / 8
@@ -55,17 +55,25 @@ def capture_fenetre(t: list,couleur: str):
     main.capture(t,x,y)
 
 
+def jouer(d: dict): #{"champ_manches": nb_manches, "champ_pseudo": pseudo,"nb_joueurs": nb_joueurs, "ia_alea": ia_alea, "ia_contre": ia_contre, "bonus": bonus}
+    fltk.cree_fenetre(LONGUEUR,LARGEUR)
+    for i in range(d["champ_manches"]):
+        t = main.tableau_depart()
+        if d["bonus"]:
+            b = main.bonus(d["nb_joueurs"])
+        else:
+            b = []
+        list_couleur = list(couleurs.keys())
+        random.shuffle(list_couleur)
+        grille()
+        pion(t)
+        while not main.end(t):
+            capture_fenetre(t,list_couleur[0])
+            pion(t)
+            list_couleur = list_couleur[1:] + [list_couleur[0]]
+        fltk.efface_tout()
+    fltk.ferme_fenetre()
 
 
 if __name__ == "__main__":
-    fltk.cree_fenetre(LONGUEUR,LARGEUR)
-    t = main.tableau_depart()
-    joueur = ["R","J","B","V"]
-    while not main.end(t):
-        grille()
-        pion(t)
-        capture_fenetre(t,joueur[0])
-        joueur = joueur[1:] + [joueur[0]]
-    pion(t)
-    fltk.attend_ev()
-    fltk.ferme_fenetre()
+    jouer({"champ_manches": 2, "champ_pseudo": [],"nb_joueurs": 4, "ia_alea": False, "ia_contre": False, "bonus": False})
