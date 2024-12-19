@@ -53,7 +53,7 @@ def fenetre_acceuil() -> None:
     #yes/no
     fltk.rectangle( case_oui_ia_alea[0], case_oui_ia_alea[1], case_oui_ia_alea[2], case_oui_ia_alea[3], remplissage="white", tag="case_oui_ia_alea")
     fltk.texte(LARGEUR//2 - 15, H*4 + ecart*10 + H//2, "OUI", ancrage="center", taille=20, tag="text_oui_ia_alea")
-    fltk.rectangle( case_non_ia_alea[0], case_non_ia_alea[1], case_non_ia_alea[2], case_non_ia_alea[3], remplissage="white", tag="case_non_ia_alea")
+    fltk.rectangle( case_non_ia_alea[0], case_non_ia_alea[1], case_non_ia_alea[2], case_non_ia_alea[3], remplissage="grey", tag="case_non_ia_alea")
     fltk.texte(LARGEUR//2 + 105, H*4 + ecart*10 + H//2, "NON", ancrage="center", taille=20, tag="text_non_ia_alea")
     
     #ia contre
@@ -62,16 +62,16 @@ def fenetre_acceuil() -> None:
     #yes/no
     fltk.rectangle( case_oui_ia_contre[0], case_oui_ia_contre[1], case_oui_ia_contre[2], case_oui_ia_contre[3], remplissage="white", tag="case_oui_ia_contre")
     fltk.texte(LARGEUR//2 - 15, H*5 + ecart*11 + H//2, "OUI", ancrage="center", taille=20, tag="text_oui_ia_contre")
-    fltk.rectangle( case_non_ia_contre[0], case_non_ia_contre[1], case_non_ia_contre[2], case_non_ia_contre[3], remplissage="white", tag="case_non_ia_contre")
+    fltk.rectangle( case_non_ia_contre[0], case_non_ia_contre[1], case_non_ia_contre[2], case_non_ia_contre[3], remplissage="grey", tag="case_non_ia_contre")
     fltk.texte(LARGEUR//2 + 105, H*5 + ecart*11 + H//2, "NON", ancrage="center", taille=20, tag="text_non_ia_contre")
     
     #Bonus
     fltk.rectangle(ecart,H*2 + ecart*12 + 200, LARGEUR//2 - 100, H*6 + ecart*12 + H, remplissage="white", tag="case_bonus")
-    fltk.texte(LARGEUR//4 -H, H*6 + ecart*12 + H//2, "BONUS", ancrage="center", taille=20, tag="text_bonus")
+    fltk.texte(LARGEUR//4 -H, H*6 + ecart*12 + H//2, "CASE BONUS", ancrage="center", taille=20, tag="text_bonus")
     #yes/no
     fltk.rectangle( case_oui_bonus[0], case_oui_bonus[1], case_oui_bonus[2], case_oui_bonus[3], remplissage="white", tag="case_oui_bonus")
     fltk.texte(LARGEUR//2 - 15, H*6 + ecart*12 + H//2, "OUI", ancrage="center", taille=20, tag="text_oui_bonus")
-    fltk.rectangle( case_non_bonus[0], case_non_bonus[1], case_non_bonus[2], case_non_bonus[3], remplissage="white", tag="case_non_bonus")
+    fltk.rectangle( case_non_bonus[0], case_non_bonus[1], case_non_bonus[2], case_non_bonus[3], remplissage="grey", tag="case_non_bonus")
     fltk.texte(LARGEUR//2 + 105, H*6 + ecart*12 + H//2, "NON", ancrage="center", taille=20, tag="text_non_bonus")
     
     #Jouer
