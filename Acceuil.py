@@ -364,15 +364,28 @@ def main() -> dict:
             if nom_ev == "Touche" and champ_actif:
                 if param_ev.keysym == "BackSpace":
                     if champ_actif == "champ_pseudo":
-                        taille[i] = taille[i] + 1 if taille[i] < 20 else 20 
-                        valeur_saisi[champ_actif][i] = valeur_saisi[champ_actif][i][:-1]    
+                        largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Consolas") 
+                        if taille[i] < 20:
+                            while largeur < largeur_champ:
+                                taille[i] = taille[i] + 1
+                                largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Consolas") 
+                            valeur_saisi[champ_actif][i] = valeur_saisi[champ_actif][i][:-1]    
+                        else:
+                            valeur_saisi[champ_actif][i] = valeur_saisi[champ_actif][i][:-1]  
                     elif champ_actif == "champ_manches":
-                        taille_manche = taille_manche + 1 if taille_manche < 20 else 20
-                        valeur_saisi[champ_actif] = valeur_saisi[champ_actif][:-1] 
-                        nb_manches = nb_manches[:-1]
+                        largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Consolas")
+                        if taille_manche < 20:
+                            while largeur < largeur_champ:
+                                taille_manche = taille_manche + 1
+                                largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Consolas")
+                            valeur_saisi[champ_actif] = valeur_saisi[champ_actif][:-1] 
+                            nb_manches = nb_manches[:-1]
+                        else:
+                            valeur_saisi[champ_actif] = valeur_saisi[champ_actif][:-1] 
+                            nb_manches = nb_manches[:-1]
                 else:
                     if champ_actif == "champ_pseudo" and param_ev.keysym != "space":
-                        if param_ev.keysym == "Return": #passe a la prochaine case
+                        if param_ev.keysym == "Return" or param_ev.keysym == "Tab": #passe a la prochaine case
                             i = i + 1 if i < nb_joueurs-1 else 0
                             tag_champ_actif = f"case_champ_pseudo_{i+1}"
                         else:
