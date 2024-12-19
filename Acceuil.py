@@ -15,11 +15,12 @@ case_jouer = (ecart, H*7 + ecart*13, ecart + H*2, H*8 + ecart*13)
 
 def fenetre_acceuil() -> None:
     fltk.cree_fenetre(LARGEUR, HAUTEUR)
+    fltk.image(LARGEUR//2, HAUTEUR//2,"image_retro.jpg", LARGEUR, HAUTEUR, tag="image")
     txt = "NOMBRES DE JOUEURS"
     L   = len(txt) * 12
     #Nomre de joueurs
-    fltk.rectangle(L, ecart, LARGEUR - L, ecart + H, remplissage="white", tag="case_nomre_joueurs")
-    fltk.texte(LARGEUR // 2, 40, "NOMBRES DE JOUEURS", ancrage="center",taille=20, tag="text_nomre_joueurs") #police= pour modifié la police et améliorer la visibilité
+    fltk.rectangle(L, ecart, LARGEUR - L, ecart + H, remplissage="white", tag="case_nombre_joueurs")
+    fltk.texte(LARGEUR // 2, 40, "NOMBRES DE JOUEURS", ancrage="center",taille=20, tag="text_nombre_joueurs") #police= pour modifié la police et améliorer la visibilité
     
     # carré 2, 3 et 4
     fltk.rectangle(carre_2[0], carre_2[1], carre_2[2], carre_2[3], remplissage="white", tag="case_2")
@@ -34,17 +35,15 @@ def fenetre_acceuil() -> None:
     #Nombre de manches
     txt = "NOMBRES DE MANCHES : "
     L   = len(txt) * 18
-    fltk.rectangle(ecart, H*2 + ecart*8, ecart + L, H*2 + ecart*8 + H, remplissage="white")
-    fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, txt, ancrage="center",taille=20)
+    fltk.rectangle(ecart, H*2 + ecart*8, ecart + L, H*2 + ecart*8 + H, remplissage="white", tag="case_manches")
+    fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, txt, ancrage="center",taille=20, tag="text_manches")
     #Champ de saisie
-    fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*8, LARGEUR - ecart, H*2 + ecart*8 + H, remplissage="white")
+    fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*8, LARGEUR - ecart, H*2 + ecart*8 + H, remplissage="white", tag="case_champ_manches")
     
     #Pseudo
     txt = "PSEUDO : "
-    fltk.rectangle(ecart,H*2 + ecart*9 + H, LARGEUR//2 - ecart, H*4 + ecart*9, remplissage="white")
-    fltk.texte(LARGEUR//4, H*3 + ecart*9 + H//2, txt, ancrage="center", taille=20)
-    #Champ de saisie
-    #fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9, remplissage="white")
+    fltk.rectangle(ecart,H*2 + ecart*9 + H, LARGEUR//2 - ecart, H*4 + ecart*9, remplissage="white", tag="case_pseudo")
+    fltk.texte(LARGEUR//4, H*3 + ecart*9 + H//2, txt, ancrage="center", taille=20, tag="text_pseudo")
     
     #ia aleatoire
     fltk.rectangle(ecart,H*2 + ecart*10 + 100, LARGEUR//2 - 100, H*4 + ecart*10 + H, remplissage="white", tag="case_ia_alea")
@@ -164,7 +163,7 @@ def main():
                 # Nombre de manche
                 if clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*8, LARGEUR - ecart, H*2 + ecart*8 + H):
                     champ_actif = "champ_manches"
-                    tag_champ_actif = "case_champ_manches"
+                    tag_champ_actif = "case_text_champ_manches"
                 # Pseudo
                 #nombre de joueurs = 2
                 if clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, (LARGEUR*3)//4 - ecart, H*4 + ecart*9) and nb_joueurs == 2:
@@ -280,7 +279,47 @@ def main():
                     if valeur_saisi["champ_manches"] and pseudo_valide(valeur_saisi, nb_joueurs) and nb_joueurs > 0:
                         jouer = True
                     else:
-                        continue
+                        # Affichage du message d'erreur pour le nombre de joueurs
+                        if nb_joueurs == 0:
+                            txt = "NOMBRES DE JOUEURS"
+                            L   = len(txt) * 12
+                            fltk.efface("case_nombre_joueurs")
+                            fltk.efface("text_nombre_joueurs")
+                            fltk.rectangle(L, ecart, LARGEUR - L, ecart + H, remplissage="red", tag="case_nombre_joueurs")
+                            fltk.texte(LARGEUR // 2, 40, "NOMBRES DE JOUEURS", ancrage="center",taille=20, tag="text_nombre_joueurs")
+                        if nb_joueurs > 0:
+                            txt = "NOMBRES DE JOUEURS"
+                            L   = len(txt) * 12
+                            fltk.efface("case_nombre_joueurs")
+                            fltk.efface("text_nombre_joueurs")
+                            fltk.rectangle(L, ecart, LARGEUR - L, ecart + H, remplissage="white", tag="case_nombre_joueurs")
+                            fltk.texte(LARGEUR // 2, 40, "NOMBRES DE JOUEURS", ancrage="center",taille=20, tag="text_nombre_joueurs")
+                        # Affichage du message d'erreur pour le pseudo
+                        if not(pseudo_valide(valeur_saisi, nb_joueurs)):
+                            fltk.efface("case_pseudo")
+                            fltk.efface("text_pseudo")
+                            fltk.rectangle(ecart,H*2 + ecart*9 + H, LARGEUR//2 - ecart, H*4 + ecart*9, remplissage="red", tag="case_pseudo")
+                            fltk.texte(LARGEUR//4, H*3 + ecart*9 + H//2, "PSEUDO : ", ancrage="center", taille=20, tag="text_pseudo")
+                        if pseudo_valide(valeur_saisi, nb_joueurs):
+                            fltk.efface("case_pseudo")
+                            fltk.efface("text_pseudo")
+                            fltk.rectangle(ecart,H*2 + ecart*9 + H, LARGEUR//2 - ecart, H*4 + ecart*9, remplissage="white", tag="case_pseudo")
+                            fltk.texte(LARGEUR//4, H*3 + ecart*9 + H//2, "PSEUDO : ", ancrage="center", taille=20, tag="text_pseudo")
+                        # Affichage du message d'erreur pour le nombre de manches
+                        if not(valeur_saisi["champ_manches"]):
+                            fltk.efface("case_manches")
+                            fltk.efface("text_manches")
+                            txt = "NOMBRES DE MANCHES : "
+                            L   = len(txt) * 18
+                            fltk.rectangle(ecart, H*2 + ecart*8, ecart + L, H*2 + ecart*8 + H, remplissage="red", tag="case_manches")
+                            fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, txt, ancrage="center",taille=20, tag="text_manches")
+                        if valeur_saisi["champ_manches"]:
+                            fltk.efface("case_manches")
+                            fltk.efface("text_manches")
+                            txt = "NOMBRES DE MANCHES : "
+                            L   = len(txt) * 18
+                            fltk.rectangle(ecart, H*2 + ecart*8, ecart + L, H*2 + ecart*8 + H, remplissage="white", tag="case_manches")
+                            fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, txt, ancrage="center",taille=20, tag="text_manches")
             # Gestion des touches
             if nom_ev == "Touche" and champ_actif:
                 if param_ev.keysym == "BackSpace":
@@ -306,6 +345,7 @@ def main():
                     elif nb_joueurs == 4:
                         fltk.texte(LARGEUR*9//16 if i == 0 else LARGEUR*11//16 if i == 1 else LARGEUR*13//16 if i == 2 else LARGEUR*15//16, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], ancrage="center", taille=20, tag=tag_champ_actif)
                 elif champ_actif == "champ_manches":
+                    
                     fltk.texte(LARGEUR - LARGEUR//4, H*2 + ecart*8 + H//2 , valeur_saisi["champ_manches"], ancrage="center", taille=20, tag=tag_champ_actif)
             elif nom_ev == "Quitte":
                 break
