@@ -145,6 +145,7 @@ def pseudo_valide(d: dict, n: int):
 
 def main():
     fenetre_acceuil()
+    taille_manche = 20
     champ_actif = None
     dict_case_grise_234 = {carre_2:"White", carre_3:"White", carre_4:"White"}
     dict_case_grise_oui_non_ia_ale = {case_oui_ia_alea:"White", case_non_ia_alea:"White"}
@@ -162,6 +163,8 @@ def main():
                 # Vérification des clics dans les champs
                 # Nombre de manche
                 if clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*8, LARGEUR - ecart, H*2 + ecart*8 + H):
+                    largeur_champ = (LARGEUR - ecart) - (LARGEUR//2 + 10)
+                    taille_manche = taille_manche
                     champ_actif = "champ_manches"
                     tag_champ_actif = "case_text_champ_manches"
                 # Pseudo
@@ -169,40 +172,49 @@ def main():
                 if clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, (LARGEUR*3)//4 - ecart, H*4 + ecart*9) and nb_joueurs == 2:
                     champ_actif = "champ_pseudo"
                     tag_champ_actif = "case_champ_pseudo_1"
+                    largeur_champ = ((LARGEUR*3)//4 - ecart) - (LARGEUR//2 + 10)
                     i = 0
                 if clique_dans_rectangle((LARGEUR*3)//4, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9) and nb_joueurs == 2:
                     champ_actif = "champ_pseudo"
                     tag_champ_actif = "case_champ_pseudo_2"
+                    largeur_champ =  (LARGEUR - ecart) - ((LARGEUR*3)//4)
                     i = 1
                 #nombre de joueurs = 3
                 if clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, (LARGEUR*4)//6 - ecart, H*4 + ecart*9) and nb_joueurs == 3:
                     champ_actif = "champ_pseudo"
                     tag_champ_actif = "case_champ_pseudo_1"
+                    largeur_champ = ((LARGEUR*4)//6 - ecart) - (LARGEUR//2 + 10)
                     i = 0
                 if clique_dans_rectangle((LARGEUR*4)//6, H*2 + ecart*9 + H, (LARGEUR*5)//6 - ecart, H*4 + ecart*9) and nb_joueurs == 3:
                     champ_actif = "champ_pseudo"
                     tag_champ_actif = "case_champ_pseudo_2"
+                    largeur_champ = ((LARGEUR*5)//6 - ecart)- ((LARGEUR*4)//6)
                     i = 1
                 if clique_dans_rectangle((LARGEUR*5)//6, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9) and nb_joueurs == 3:
                     champ_actif = "champ_pseudo"
                     tag_champ_actif = "case_champ_pseudo_3"
+                    largeur_champ = (LARGEUR - ecart) - ((LARGEUR*5)//6)
                     i = 2
                 #nombre de joueurs = 4
                 if clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, (LARGEUR*5)//8 - ecart, H*4 + ecart*9) and nb_joueurs == 4:
                     champ_actif = "champ_pseudo"
                     tag_champ_actif = "case_champ_pseudo_1"
+                    largeur_champ = ((LARGEUR*5)//8 - ecart) - (LARGEUR//2 + 10)
                     i = 0
                 if clique_dans_rectangle((LARGEUR*5)//8, H*2 + ecart*9 + H, (LARGEUR*6)//8 - ecart, H*4 + ecart*9) and nb_joueurs == 4:
                     champ_actif = "champ_pseudo"
                     tag_champ_actif = "case_champ_pseudo_2"
+                    largeur_champ = ((LARGEUR*6)//8 - ecart) - ((LARGEUR*5)//8)
                     i = 1
                 if clique_dans_rectangle((LARGEUR*6)//8, H*2 + ecart*9 + H, (LARGEUR*7)//8 - ecart, H*4 + ecart*9) and nb_joueurs == 4:
                     champ_actif = "champ_pseudo"
                     tag_champ_actif = "case_champ_pseudo_3"
+                    largeur_champ = ((LARGEUR*7)//8 - ecart) - ((LARGEUR*6)//8)
                     i = 2
                 if clique_dans_rectangle((LARGEUR*7)//8, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9) and nb_joueurs == 4:
                     champ_actif = "champ_pseudo"
                     tag_champ_actif = "case_champ_pseudo_4"
+                    largeur_champ = (LARGEUR - ecart) - ((LARGEUR*7)//8)
                     i = 3
                 # si cest pas dans les champs de saisies
                 if nb_joueurs == 0 and not (clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*8, LARGEUR - ecart, H*2 + ecart*8 + H) or clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9)):
@@ -213,6 +225,7 @@ def main():
                         if j > 1:
                             fltk.efface(f"champ_saisie_pseudo_{j}")
                         fltk.efface(f"case_champ_pseudo_{j}")
+                    taille = [20, 20]
                     case_grise = carre_2
                     valeur_saisi["champ_pseudo"].clear()
                     valeur_saisi["champ_pseudo"].extend(["", ""])
@@ -225,6 +238,7 @@ def main():
                         if j > 1:
                             fltk.efface(f"champ_saisie_pseudo_{j}")
                         fltk.efface(f"case_champ_pseudo_{j}")
+                    taille = [20, 20, 20]
                     case_grise = carre_3
                     valeur_saisi["champ_pseudo"].clear()
                     valeur_saisi["champ_pseudo"].extend(["", "", ""])
@@ -238,6 +252,7 @@ def main():
                         if j > 1:
                             fltk.efface(f"champ_saisie_pseudo_{j}")
                         fltk.efface(f"case_champ_pseudo_{j}")
+                    taille = [20, 20, 20, 20]
                     case_grise = carre_4
                     valeur_saisi["champ_pseudo"].clear()
                     valeur_saisi["champ_pseudo"].extend(["", "", "", ""])
@@ -324,29 +339,44 @@ def main():
             if nom_ev == "Touche" and champ_actif:
                 if param_ev.keysym == "BackSpace":
                     if champ_actif == "champ_pseudo":
+                        taille[i] = taille[i] + 1 if taille[i] < 20 else 20 
                         valeur_saisi[champ_actif][i] = valeur_saisi[champ_actif][i][:-1]    
                     elif champ_actif == "champ_manches":
+                        taille_manche = taille_manche + 1 if taille_manche < 20 else 20
                         valeur_saisi[champ_actif] = valeur_saisi[champ_actif][:-1] 
                         nb_manches = nb_manches[:-1]
                 else:
                     if champ_actif == "champ_pseudo":
-                        valeur_saisi[champ_actif][i] += param_ev.char
+                        #passe a la prochaine case
+                        if param_ev.keysym == "Return":
+                            i = i + 1 if i < nb_joueurs-1 else 0
+                            tag_champ_actif = f"case_champ_pseudo_{i+1}"
+                        else:
+                            largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i])
+                            if largeur > largeur_champ:
+                                taille[i] = taille[i] - 1 if taille[i] > 10 else 10
+                            else:     
+                                valeur_saisi[champ_actif][i] += param_ev.char
                     else:
                         if param_ev.char.isdigit():
-                            valeur_saisi["champ_manches"] += param_ev.char
-                            nb_manches += param_ev.char
+                            largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche)
+                            if largeur > largeur_champ:
+                                taille_manche = taille_manche - 1 if taille_manche > 10 else 10
+                            else:
+                                valeur_saisi["champ_manches"] += param_ev.char
+                                nb_manches += param_ev.char
                 # Mise à jour de l'affichage
                 fltk.efface(tag_champ_actif)
                 if champ_actif == "champ_pseudo":
                     if nb_joueurs == 2:
-                        fltk.texte(LARGEUR*5//8 if i == 0 else LARGEUR*7//8, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], ancrage="center", taille=20, tag=tag_champ_actif)
+                        fltk.texte(LARGEUR*5//8 if i == 0 else LARGEUR*7//8, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], ancrage="center", taille=taille[i], tag=tag_champ_actif)
                     elif nb_joueurs == 3:
-                        fltk.texte(LARGEUR*7//12 if i == 0 else LARGEUR*9//12 if i == 1 else LARGEUR*11//12, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], ancrage="center", taille=20, tag=tag_champ_actif)
+                        fltk.texte(LARGEUR*7//12 if i == 0 else LARGEUR*9//12 if i == 1 else LARGEUR*11//12, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], ancrage="center", taille=taille[i], tag=tag_champ_actif)
                     elif nb_joueurs == 4:
-                        fltk.texte(LARGEUR*9//16 if i == 0 else LARGEUR*11//16 if i == 1 else LARGEUR*13//16 if i == 2 else LARGEUR*15//16, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], ancrage="center", taille=20, tag=tag_champ_actif)
+                        fltk.texte(LARGEUR*9//16 if i == 0 else LARGEUR*11//16 if i == 1 else LARGEUR*13//16 if i == 2 else LARGEUR*15//16, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], ancrage="center", taille=taille[i], tag=tag_champ_actif)
                 elif champ_actif == "champ_manches":
                     
-                    fltk.texte(LARGEUR - LARGEUR//4, H*2 + ecart*8 + H//2 , valeur_saisi["champ_manches"], ancrage="center", taille=20, tag=tag_champ_actif)
+                    fltk.texte(LARGEUR - LARGEUR//4, H*2 + ecart*8 + H//2 , valeur_saisi["champ_manches"], ancrage="center", taille=taille_manche, tag=tag_champ_actif)
             elif nom_ev == "Quitte":
                 break
                 
