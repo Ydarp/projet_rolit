@@ -84,6 +84,9 @@ def capture(t: list, x: int, y: int) -> None:
             captures.extend(temp)
     for cx, cy in captures:
         t[cx][cy] = couleur
+    if len(captures) == 0:
+        return False
+    return True
 
 def compte_couleur(t: list,bonus: list):
     """Compte le nombre de pion de chaque couleur actuellement en jeu.
