@@ -14,6 +14,8 @@ case_oui_bonus, case_non_bonus = (LARGEUR//2 - H, H*2 + ecart*12 + 100 + H*2, LA
 case_jouer = (ecart, H*7 + ecart*13, ecart + H*2, H*8 + ecart*13)
 
 def fenetre_acceuil() -> None:
+    """Cree la fenetre de départ et ajoute les cases d'options
+    """
     fltk.cree_fenetre(LARGEUR, HAUTEUR)
     fltk.image(LARGEUR//2, HAUTEUR//2,"image_retro.jpg", LARGEUR, HAUTEUR, tag="image")
     txt = "NOMBRES DE JOUEURS"
@@ -92,6 +94,16 @@ def clique_dans_rectangle(x1, y1, x2, y2):
     return x1 < x < x2 and y1 < y < y2
 
 def modifie_dict_case_grise(case_grise, dict_case_grise):
+    """
+    Modifie la valeur de la clé (case_grise) a "Grey" et toutes les autres valeur a "White"
+
+    Args:
+        case_grise(tuple(int,int,int,int)): La case qui doit etre mis en gris.
+        dict_case_grise(dict): Un dictionnaire avec des cases comme clé et des couleur comme valeur.
+
+    Returns:
+        dict: La version a jour de dict_case_grise
+    """
     for c, v in dict_case_grise.items():
         if c == case_grise:
             dict_case_grise[c] = "Grey"
@@ -100,6 +112,14 @@ def modifie_dict_case_grise(case_grise, dict_case_grise):
     return dict_case_grise
     
 def detecte_gris(d: dict):
+    """Vérifie si dans le dictionnaire, il y a au moins une clé avec la valeur "Grey"
+
+    Args:
+        d (dict): Le dictionnaire a vérifier
+
+    Returns:
+        bool: True si il y a au moins une clé avec la valeur "Grey", False sinon.
+    """
     for v in d.values():
         if v == "Grey":
             return True
@@ -144,6 +164,11 @@ def pseudo_valide(d: dict, n: int):
     return True
 
 def main() -> dict:
+    """Fonction principale qui tant que jouer est faux, va actualiser la page et prendre les données que l'utilisateur va renseigner
+
+    Returns:
+        dict: Toutes les données nécessaires au jeu
+    """
     fenetre_acceuil()
     taille_manche = 20
     champ_actif = None
