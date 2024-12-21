@@ -398,12 +398,12 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
             pion(t)
             fltk.efface("text_tour")
             fltk.efface("text_score")
-            fltk.texte(LARGEUR//2, 45, "Tour de "+c_j[c]+" qui est "+c+".", ancrage="center", taille=20, tag="text_tour")
+            fltk.texte(LARGEUR//2, 45, "Tour de "+c_j[c]+" qui est "+c+".", ancrage="center", taille=20, police="Consolas", tag="text_tour")
             couleur = []
             for cle, val in score.items():
                 couleur.append(cle)
             for i in range(len(score)):
-                fltk.texte(LARGEUR*3//4 + 25, 30 + i*10, couleur[i]+" : "+str(score[couleur[i]]), taille=10, police="Consolas", tag="text_score")
+                fltk.texte(LARGEUR*3//4 + 25, 30 + i*10, couleur[i]+" : "+str(score[couleur[i]])+" points", taille=10, police="Consolas", tag="text_score") if score[couleur[i]] > 1 else fltk.texte(LARGEUR*3//4 + 25, 30 + i*10, couleur[i]+" : "+str(score[couleur[i]])+" point", taille=10, police="Consolas", tag="text_score")
         if contre_ia and not alea:
             if joueur == t_c[0]:
                 x, y = obtenir_coordonnees(t, False, graphique)
@@ -502,7 +502,7 @@ def capture_fenetre(t: list, alea: bool, couleur: str):
     capture(t,x,y)
    
 def fenetre_jeu() -> None:
-    fltk.cree_fenetre(LONGUEUR,LARGEUR)
+    fltk.cree_fenetre(LONGUEUR,LARGEUR, redimension=True)
     fltk.image(LONGUEUR//2, LARGEUR//2, "image_retro_2.webp", LONGUEUR, LARGEUR)
     fltk.rectangle(150,150,LARGEUR-150,LARGEUR-150,remplissage="white")
     
@@ -547,6 +547,8 @@ def main(d: dict, graphique: bool):
             fltk.efface("pion")
             fltk.efface("bonus")
         fltk.ferme_fenetre()
-        
+        print(score_p, manches_gagnees)
+    return score_p, manches_gagnees
+
 if __name__ == '__main__':
     main({"champ_manches": 2, "champ_pseudo": [],"nb_joueurs": 4, "ia_alea": False, "ia_contre": False, "bonus": False}, graphique=True)

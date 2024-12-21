@@ -16,7 +16,7 @@ case_jouer = (ecart, H*7 + ecart*13, ecart + H*2, H*8 + ecart*13)
 def fenetre_acceuil() -> None:
     """Cree la fenetre de départ et ajoute les cases d'options
     """
-    fltk.cree_fenetre(LARGEUR, HAUTEUR)
+    fltk.cree_fenetre(LARGEUR, HAUTEUR, redimension=True)
     fltk.image(LARGEUR//2, HAUTEUR//2,"image_retro.jpg", LARGEUR, HAUTEUR, tag="image")
     txt = "NOMBRES DE JOUEURS"
     L   = len(txt) * 12
@@ -78,6 +78,25 @@ def fenetre_acceuil() -> None:
     fltk.rectangle(case_jouer[0], case_jouer[1], case_jouer[2], case_jouer[3], remplissage="white", tag="case_jouer")
     fltk.texte(case_jouer[2] - H, case_jouer[1] + H // 2, "JOUER", ancrage="center", taille=20, tag="text_jouer")
     
+def texte_dans_rectangle(x1, y1, x2, y2, text: str, taille=20, ancrage="center", tag=None):
+    largeur_champ = x2 - x1
+    hauteur_champ = y2 - y1
+    nb_espace = detecte_espace(text)
+    largeur = fltk.taille_texte(text, taille=taille, police="Consolas")[0] + nb_espace * (taille+5)
+    if largeur > largeur_champ:
+        if taille > 0:
+            while largeur > largeur_champ:
+                taille -= 1
+                largeur = fltk.taille_texte(text, taille=taille, police="Consolas")[0] + nb_espace * (taille+5)
+            print(largeur, largeur_champ)
+    if ancrage=="center":
+        return fltk.texte(x1 + largeur_champ // 2, y1 + hauteur_champ // 2, text, ancrage=ancrage, taille=taille, tag=tag)
+    return fltk.texte(x1, y1, text, ancrage=ancrage, taille=taille, tag=tag)
+
+def detecte_espace(text: str):
+    t = text.split()
+    return len(t)-1
+
 def clique_dans_rectangle(x1, y1, x2, y2):
     """Vérifie si la souris est dans le rectangle
 
@@ -453,6 +472,7 @@ def main() -> dict:
             rectangle_text(case_oui_bonus, "OUI", remplissage=dict_case_grise_oui_non_bonus[case_oui_bonus], tag_rectangle="case_oui_bonus", tag_text="text_oui_bonus", oui_non=True)
             rectangle_text(case_non_bonus, "NON", remplissage=dict_case_grise_oui_non_bonus[case_non_bonus], tag_rectangle="case_non_bonus", tag_text="text_non_bonus", oui_non=True)
         fltk.mise_a_jour() 
+    fltk.ferme_fenetre()
     return valeur_saisi 
       
 if __name__ == "__main__":
