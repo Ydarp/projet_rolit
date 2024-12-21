@@ -1,5 +1,5 @@
-import random
-import fltk
+import fltk, random, time
+
 
 #Variables de la fenetre graphique
 LONGUEUR, LARGEUR = 800, 800
@@ -415,7 +415,7 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
             x, y = obtenir_coordonnees(t, alea_temp, graphique)
             t[x][y] = c
             capture(t,x,y)
-            #si alea_temp retarder le jeu
+            fltk.attente(1/4) if graphique else time.sleep(1/4)
         t_c = t_c[1:] + [t_c[0]]
         if alea and contre_ia:
             if joueur == t_c[0]:
@@ -551,4 +551,4 @@ def main(d: dict, graphique: bool):
     return score_p, manches_gagnees
 
 if __name__ == '__main__':
-    main({"champ_manches": 2, "champ_pseudo": [],"nb_joueurs": 4, "ia_alea": False, "ia_contre": False, "bonus": False}, graphique=True)
+    main({"champ_manches": 2, "champ_pseudo": [],"nb_joueurs": 4, "ia_alea": False, "ia_contre": False, "bonus": False}, graphique=False)

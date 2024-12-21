@@ -181,7 +181,7 @@ def pseudo_valide(d: dict, n: int):
         else:
             return False
     return True
-
+    
 def main() -> dict:
     """Fonction principale qui tant que jouer est faux, va actualiser la page et prendre les données que l'utilisateur va renseigner
 
@@ -335,7 +335,7 @@ def main() -> dict:
                     dict_case_grise_oui_non_bonus = modifie_dict_case_grise(case_grise, dict_case_grise_oui_non_bonus)
                 # Vérication des clics dans la case jouer
                 if clique_dans_rectangle(case_jouer[0], case_jouer[1], case_jouer[2], case_jouer[3]):
-                    if valeur_saisi["champ_manches"] and pseudo_valide(valeur_saisi, nb_joueurs) and nb_joueurs > 0:
+                    if valeur_saisi["champ_manches"] and pseudo_valide(valeur_saisi, nb_joueurs) and nb_joueurs > 0 and (ia_alea and (not ia_contre) or ia_contre and (not ia_alea)):
                         jouer = True
                     else:
                         # Affichage du message d'erreur pour le nombre de joueurs
@@ -379,6 +379,25 @@ def main() -> dict:
                             L   = len(txt) * 18
                             fltk.rectangle(ecart, H*2 + ecart*8, ecart + L, H*2 + ecart*8 + H, remplissage="white", tag="case_manches")
                             fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, txt, ancrage="center",taille=20, tag="text_manches")
+                        # Affichage du message d'erreur pour l'ia_alea
+                        if not (ia_alea and (not ia_contre) or ia_contre and (not ia_alea)):
+                            fltk.efface("case_ia_alea")
+                            fltk.efface("text_ia_alea")
+                            fltk.efface("case_ia_contre")
+                            fltk.efface("text_ia_contre")
+                            fltk.rectangle(ecart,H*2 + ecart*10 + 100, LARGEUR//2 - 100, H*4 + ecart*10 + H, remplissage="red", tag="case_ia_alea")
+                            fltk.texte(LARGEUR//4 -H, H*4 + ecart*10 + H//2, "IA ALÉATOIRE", ancrage="center", taille=20, tag="text_ia_alea")
+                            fltk.rectangle(ecart,H*2 + ecart*11 + 150, LARGEUR//2 - 100, H*5 + ecart*11 + H, remplissage="red", tag="case_ia_contre")
+                            fltk.texte(LARGEUR//4 -H, H*5 + ecart*11 + H//2, "CONTRE IA", ancrage="center", taille=20, tag="text_ia_contre")
+                        if ia_alea and (not ia_contre) or ia_contre and (not ia_alea):
+                            fltk.efface("case_ia_alea")
+                            fltk.efface("text_ia_alea")
+                            fltk.efface("case_ia_contre")
+                            fltk.efface("text_ia_contre")
+                            fltk.rectangle(ecart,H*2 + ecart*10 + 100, LARGEUR//2 - 100, H*4 + ecart*10 + H, remplissage="white", tag="case_ia_alea")
+                            fltk.texte(LARGEUR//4 -H, H*4 + ecart*10 + H//2, "IA ALÉATOIRE", ancrage="center", taille=20, tag="text_ia_alea")
+                            fltk.rectangle(ecart,H*2 + ecart*11 + 150, LARGEUR//2 - 100, H*5 + ecart*11 + H, remplissage="white", tag="case_ia_contre")
+                            fltk.texte(LARGEUR//4 -H, H*5 + ecart*11 + H//2, "CONTRE IA", ancrage="center", taille=20, tag="text_ia_contre")
             # Gestion des touches
             if nom_ev == "Touche" and champ_actif:
                 if param_ev.keysym == "BackSpace":
