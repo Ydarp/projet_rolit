@@ -93,7 +93,7 @@ def capture(t: list, x: int, y: int) -> None:
     for cx, cy in captures:
         t[cx][cy] = couleur
 
-def compte_couleur(t: list,bonus: list):
+def compte_couleur(t: list,bonus: list) -> dict:
     """Compte le nombre de pion de chaque couleur actuellement en jeu.
 
     Args:
@@ -389,13 +389,21 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
         alea_temp = alea
     while not end(t):
         c = t_c[0] 
+        score = compte_couleur(t, bonus)
         if not graphique:
             affichage_tableau(t) 
             print("Tour de ", c_j[c],"qui est ",c,".")
         if graphique:
             #grille()
             pion(t)
-            #Faire un rectangle en haut pour afficher le joueur qui joue
+            fltk.efface("text_tour")
+            fltk.efface("text_score")
+            fltk.texte(LARGEUR//2, 45, "Tour de "+c_j[c]+" qui est "+c+".", ancrage="center", taille=20, tag="text_tour")
+            couleur = []
+            for cle, val in score.items():
+                couleur.append(cle)
+            for i in range(len(score)):
+                fltk.texte(LARGEUR*3//4 + 25, 30 + i*10, couleur[i]+" : "+str(score[couleur[i]]), taille=10, police="Consolas", tag="text_score")
         if contre_ia and not alea:
             if joueur == t_c[0]:
                 x, y = obtenir_coordonnees(t, False, graphique)
@@ -415,7 +423,7 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
             else:
                 alea_temp = True
 
-def afficher_resultat_manche(score: dict, manches_gagnees: dict, c_j: dict):
+def afficher_resultat_manche(score: dict, manches_gagnees: dict, c_j: dict, graphique: bool = False):
     """affiche le gagnant de la manche et augmente le nombre de manche gagnée
 
     Args:
@@ -425,8 +433,13 @@ def afficher_resultat_manche(score: dict, manches_gagnees: dict, c_j: dict):
     """
     g = valeur_dict_plus_grande(score) #gagnant de la manche
     manches_gagnees[g[0]] += 1
-    print(c_j[g[0]],"a gagné la manche avec un score de", score[g[0]])    
-
+    if not graphique:
+        print(c_j[g[0]],"a gagné la manche avec un score de", score[g[0]]) 
+    else:
+        #fltk.efface("text_gagnant_manche")
+        #fltk.texte(LARGEUR*3//4 + 20, 25, g[0]+" a gagné la manche \nprécédente avec un score de "+str(score[g[0]]), taille=10, tag="text_gagnant_manche")   
+        pass
+        
 def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
     """affiche le gagnant de la partie
 
@@ -481,13 +494,21 @@ def pion(t: list):
     for i in range(len(t)):
         for j in range(len(t)):
             if t[i][j]:
-                fltk.cercle(150 + (TAILLE_CASE_X / 2) + i * TAILLE_CASE_X, 150 + (TAILLE_CASE_Y / 2) + j * TAILLE_CASE_Y , 25, couleur = couleurs[t[i][j]] ,remplissage = couleurs[t[i][j]])
+                fltk.cercle(150 + (TAILLE_CASE_X / 2) + i * TAILLE_CASE_X, 150 + (TAILLE_CASE_Y / 2) + j * TAILLE_CASE_Y , 25, couleur = couleurs[t[i][j]] ,remplissage = couleurs[t[i][j]], tag="pion")
 
 def capture_fenetre(t: list, alea: bool, couleur: str):
     x,y = obtenir_coordonnees(t, alea, True)
     t[x][y] = couleur
     capture(t,x,y)
    
+def fenetre_jeu() -> None:
+    fltk.cree_fenetre(LONGUEUR,LARGEUR)
+    fltk.image(LONGUEUR//2, LARGEUR//2, "image_retro_2.webp", LONGUEUR, LARGEUR)
+    fltk.rectangle(150,150,LARGEUR-150,LARGEUR-150,remplissage="white")
+    
+    fltk.rectangle(LARGEUR//4,20,LARGEUR*3//4,20 + 50,remplissage="white")#rectangle pour le joueur qui joue
+    fltk.rectangle(LARGEUR*3//4 + 20, 20, LARGEUR - 20, 150 - 20, remplissage="white")#rectangle du score
+    
 #main 
 def main(d: dict, graphique: bool):
     """fonction principale de jeu"""
@@ -504,24 +525,27 @@ def main(d: dict, graphique: bool):
             jouer_manche(t, c_j, alea,contre_ia,b, False)
             affichage_tableau(t)
             score_m = compte_couleur(t,b)
-            afficher_resultat_manche(score_m, manches_gagnees, c_j)
+            afficher_resultat_manche(score_m, manches_gagnees, c_j, graphique=False)
             score_p = score_m if k == 0 else additionne_dict(score_p,score_m)
         afficher_resultat_partie(score_p, manches_gagnees, c_j)
     else:
-        fltk.cree_fenetre(LONGUEUR,LARGEUR)
-        for i in range(int(d["champ_manches"])):
+        fenetre_jeu()
+        manches_gagnees, c_j = {c: 0 for c in list(couleur_joueur(d["champ_pseudo"]).keys())}, couleur_joueur(d["champ_pseudo"])
+        for k in range(int(d["champ_manches"])):
             t = tableau_depart()
-            fltk.image(LONGUEUR//2, LARGEUR//2, "image_retro_2.webp", LONGUEUR, LARGEUR)
-            fltk.rectangle(150,150,LARGEUR-150,LARGEUR-150,remplissage="white")
             if d["bonus"]:
                 b = bonus(int(d["nb_joueurs"]))
                 for e in b:
-                    fltk.rectangle(150 + e[0]*TAILLE_CASE_X, 150 + e[1]*TAILLE_CASE_Y, 150 + e[0]*TAILLE_CASE_X + TAILLE_CASE_X, 150 + e[1]*TAILLE_CASE_Y + TAILLE_CASE_Y, remplissage="purple")
+                    fltk.rectangle(150 + e[0]*TAILLE_CASE_X, 150 + e[1]*TAILLE_CASE_Y, 150 + e[0]*TAILLE_CASE_X + TAILLE_CASE_X, 150 + e[1]*TAILLE_CASE_Y + TAILLE_CASE_Y, remplissage="purple", tag="bonus")
             else:
                 b = []
             grille()
-            jouer_manche(t, couleur_joueur(d["champ_pseudo"]), d["ia_alea"],d["ia_contre"],b, graphique=True)
-            fltk.efface_tout()
+            jouer_manche(t, c_j, d["ia_alea"],d["ia_contre"],b, graphique=True)
+            score_m = compte_couleur(t,b)
+            afficher_resultat_manche(score_m, manches_gagnees, c_j, graphique=True)
+            score_p = score_m if k == 0 else additionne_dict(score_p,score_m)
+            fltk.efface("pion")
+            fltk.efface("bonus")
         fltk.ferme_fenetre()
         
 if __name__ == '__main__':
