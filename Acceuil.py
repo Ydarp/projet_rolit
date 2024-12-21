@@ -390,7 +390,6 @@ def main() -> dict:
                             tag_champ_actif = f"case_champ_pseudo_{i+1}"
                         else:
                             largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Consolas")
-                            print(largeur, largeur_champ)
                             if largeur > largeur_champ:
                                 if taille[i] > 10:
                                     while largeur > largeur_champ:
