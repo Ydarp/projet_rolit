@@ -17,66 +17,64 @@ def fenetre_acceuil() -> None:
     """Cree la fenetre de départ et ajoute les cases d'options
     """
     fltk.cree_fenetre(LARGEUR, HAUTEUR, redimension=True)
-    fltk.image(LARGEUR//2, HAUTEUR//2,"image_retro.jpg", LARGEUR, HAUTEUR, tag="image")
+    #fltk.image(LARGEUR//2, HAUTEUR//2,"image_retro.jpg", LARGEUR, HAUTEUR, tag="image")
+    fltk.rectangle(0, 0, LARGEUR, HAUTEUR, remplissage="#260d2e", tag="fond_acceuil")
     txt = "NOMBRES DE JOUEURS"
     L   = len(txt) * 12
     #Nomre de joueurs
-    fltk.rectangle(L, ecart, LARGEUR - L, ecart + H, remplissage="white", tag="case_nombre_joueurs")
-    fltk.texte(LARGEUR // 2, 40, "NOMBRES DE JOUEURS", ancrage="center",taille=20, tag="text_nombre_joueurs") #police= pour modifié la police et améliorer la visibilité
+    fltk.rectangle(L, ecart, LARGEUR - L, ecart + H, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_nombre_joueurs")
+    fltk.texte(LARGEUR // 2, 35, "NOMBRES DE JOUEURS", couleur="#D9F2D1", ancrage="center", police="Calibri", taille=25, tag="text_nombre_joueurs") #police= pour modifié la police et améliorer la visibilité
     
     # carré 2, 3 et 4
-    fltk.rectangle(carre_2[0], carre_2[1], carre_2[2], carre_2[3], remplissage="white", tag="case_2")
-    fltk.texte(carre_2[0] + H//2, carre_2[1] + H//2,"2", ancrage="center",taille=20, tag="text_2")
+    fltk.rectangle(carre_2[0], carre_2[1], carre_2[2], carre_2[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_2")
+    fltk.texte(carre_2[0] + H//2, carre_2[1] + H//2,"2", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_2")
     
-    fltk.rectangle(carre_3[0], carre_3[1], carre_3[2], carre_3[3], remplissage="white", tag="case_3")
-    fltk.texte(carre_3[0] + H//2, carre_3[1] + H//2,"3", ancrage="center",taille=20, tag="text_3")
+    fltk.rectangle(carre_3[0], carre_3[1], carre_3[2], carre_3[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_3")
+    fltk.texte(carre_3[0] + H//2, carre_3[1] + H//2,"3", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_3")
     
-    fltk.rectangle(carre_4[0], carre_4[1], carre_4[2], carre_4[3], remplissage="white", tag="case_4")
-    fltk.texte(carre_4[0] + H//2, carre_4[1] + H//2,"4", ancrage="center",taille=20, tag="text_4")
+    fltk.rectangle(carre_4[0], carre_4[1], carre_4[2], carre_4[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_4")
+    fltk.texte(carre_4[0] + H//2, carre_4[1] + H//2,"4", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_4")
     
     #Nombre de manches
-    txt = "NOMBRES DE MANCHES : "
-    L   = len(txt) * 18
-    fltk.rectangle(ecart, H*2 + ecart*8, ecart + L, H*2 + ecart*8 + H, remplissage="white", tag="case_manches")
-    fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, txt, ancrage="center",taille=20, tag="text_manches")
+    fltk.rectangle(ecart, H*2 + ecart*8, LARGEUR//2 - ecart, H*2 + ecart*8 + H, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_manches")
+    fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, "NOMBRES DE MANCHES", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_manches")
     #Champ de saisie
-    fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*8, LARGEUR - ecart, H*2 + ecart*8 + H, remplissage="white", tag="case_champ_manches")
+    fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*8, LARGEUR - ecart, H*2 + ecart*8 + H, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_champ_manches")
     
     #Pseudo
-    txt = "PSEUDO : "
-    fltk.rectangle(ecart,H*2 + ecart*9 + H, LARGEUR//2 - ecart, H*4 + ecart*9, remplissage="white", tag="case_pseudo")
-    fltk.texte(LARGEUR//4, H*3 + ecart*9 + H//2, txt, ancrage="center", taille=20, tag="text_pseudo")
+    fltk.rectangle(ecart,H*2 + ecart*9 + H, LARGEUR//2 - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_pseudo")
+    fltk.texte(LARGEUR//4, H*3 + ecart*9 + H//2, "PSEUDO", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_pseudo")
     
     #ia aleatoire
-    fltk.rectangle(ecart,H*2 + ecart*10 + 100, LARGEUR//2 - 100, H*4 + ecart*10 + H, remplissage="white", tag="case_ia_alea")
-    fltk.texte(LARGEUR//4 -H, H*4 + ecart*10 + H//2, "IA ALÉATOIRE", ancrage="center", taille=20, tag="text_ia_alea")
+    fltk.rectangle(ecart,H*2 + ecart*10 + 100, LARGEUR//2 - 100, H*4 + ecart*10 + H, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_ia_alea")
+    fltk.texte(LARGEUR//4 -H, H*4 + ecart*10 + H//2, "IA ALÉATOIRE", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_ia_alea")
     #yes/no
-    fltk.rectangle( case_oui_ia_alea[0], case_oui_ia_alea[1], case_oui_ia_alea[2], case_oui_ia_alea[3], remplissage="white", tag="case_oui_ia_alea")
-    fltk.texte(LARGEUR//2 - 15, H*4 + ecart*10 + H//2, "OUI", ancrage="center", taille=20, tag="text_oui_ia_alea")
-    fltk.rectangle( case_non_ia_alea[0], case_non_ia_alea[1], case_non_ia_alea[2], case_non_ia_alea[3], remplissage="grey", tag="case_non_ia_alea")
-    fltk.texte(LARGEUR//2 + 105, H*4 + ecart*10 + H//2, "NON", ancrage="center", taille=20, tag="text_non_ia_alea")
+    fltk.rectangle( case_oui_ia_alea[0], case_oui_ia_alea[1], case_oui_ia_alea[2], case_oui_ia_alea[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_oui_ia_alea")
+    fltk.texte(LARGEUR//2 - 15, H*4 + ecart*10 + H//2, "OUI", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_oui_ia_alea")
+    fltk.rectangle( case_non_ia_alea[0], case_non_ia_alea[1], case_non_ia_alea[2], case_non_ia_alea[3], couleur="#D9F2D1", epaisseur=5, remplissage="grey", tag="case_non_ia_alea")
+    fltk.texte(LARGEUR//2 + 105, H*4 + ecart*10 + H//2, "NON", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_non_ia_alea")
     
     #ia contre
-    fltk.rectangle(ecart,H*2 + ecart*11 + 150, LARGEUR//2 - 100, H*5 + ecart*11 + H, remplissage="white", tag="case_ia_contre")
-    fltk.texte(LARGEUR//4 -H, H*5 + ecart*11 + H//2, "CONTRE IA", ancrage="center", taille=20, tag="text_ia_contre")
+    fltk.rectangle(ecart,H*2 + ecart*11 + 150, LARGEUR//2 - 100, H*5 + ecart*11 + H, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_ia_contre")
+    fltk.texte(LARGEUR//4 -H, H*5 + ecart*11 + H//2, "CONTRE IA", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_ia_contre")
     #yes/no
-    fltk.rectangle( case_oui_ia_contre[0], case_oui_ia_contre[1], case_oui_ia_contre[2], case_oui_ia_contre[3], remplissage="white", tag="case_oui_ia_contre")
-    fltk.texte(LARGEUR//2 - 15, H*5 + ecart*11 + H//2, "OUI", ancrage="center", taille=20, tag="text_oui_ia_contre")
-    fltk.rectangle( case_non_ia_contre[0], case_non_ia_contre[1], case_non_ia_contre[2], case_non_ia_contre[3], remplissage="grey", tag="case_non_ia_contre")
-    fltk.texte(LARGEUR//2 + 105, H*5 + ecart*11 + H//2, "NON", ancrage="center", taille=20, tag="text_non_ia_contre")
+    fltk.rectangle( case_oui_ia_contre[0], case_oui_ia_contre[1], case_oui_ia_contre[2], case_oui_ia_contre[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_oui_ia_contre")
+    fltk.texte(LARGEUR//2 - 15, H*5 + ecart*11 + H//2, "OUI", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_oui_ia_contre")
+    fltk.rectangle( case_non_ia_contre[0], case_non_ia_contre[1], case_non_ia_contre[2], case_non_ia_contre[3], remplissage="grey", couleur="#D9F2D1", epaisseur=5, tag="case_non_ia_contre")
+    fltk.texte(LARGEUR//2 + 105, H*5 + ecart*11 + H//2, "NON", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_non_ia_contre")
     
     #Bonus
-    fltk.rectangle(ecart,H*2 + ecart*12 + 200, LARGEUR//2 - 100, H*6 + ecart*12 + H, remplissage="white", tag="case_bonus")
-    fltk.texte(LARGEUR//4 -H, H*6 + ecart*12 + H//2, "CASE BONUS", ancrage="center", taille=20, tag="text_bonus")
+    fltk.rectangle(ecart,H*2 + ecart*12 + 200, LARGEUR//2 - 100, H*6 + ecart*12 + H, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_bonus")
+    fltk.texte(LARGEUR//4 -H, H*6 + ecart*12 + H//2, "CASE BONUS", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_bonus")
     #yes/no
-    fltk.rectangle( case_oui_bonus[0], case_oui_bonus[1], case_oui_bonus[2], case_oui_bonus[3], remplissage="white", tag="case_oui_bonus")
-    fltk.texte(LARGEUR//2 - 15, H*6 + ecart*12 + H//2, "OUI", ancrage="center", taille=20, tag="text_oui_bonus")
-    fltk.rectangle( case_non_bonus[0], case_non_bonus[1], case_non_bonus[2], case_non_bonus[3], remplissage="grey", tag="case_non_bonus")
-    fltk.texte(LARGEUR//2 + 105, H*6 + ecart*12 + H//2, "NON", ancrage="center", taille=20, tag="text_non_bonus")
+    fltk.rectangle( case_oui_bonus[0], case_oui_bonus[1], case_oui_bonus[2], case_oui_bonus[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_oui_bonus")
+    fltk.texte(LARGEUR//2 - 15, H*6 + ecart*12 + H//2, "OUI", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_oui_bonus")
+    fltk.rectangle( case_non_bonus[0], case_non_bonus[1], case_non_bonus[2], case_non_bonus[3], remplissage="grey", couleur="#D9F2D1", epaisseur=5, tag="case_non_bonus")
+    fltk.texte(LARGEUR//2 + 105, H*6 + ecart*12 + H//2, "NON", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_non_bonus")
     
     #Jouer
-    fltk.rectangle(case_jouer[0], case_jouer[1], case_jouer[2], case_jouer[3], remplissage="white", tag="case_jouer")
-    fltk.texte(case_jouer[2] - H, case_jouer[1] + H // 2, "JOUER", ancrage="center", taille=20, tag="text_jouer")
+    fltk.rectangle(case_jouer[0], case_jouer[1], case_jouer[2], case_jouer[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_jouer")
+    fltk.texte(case_jouer[2] - H, case_jouer[1] + H // 2, "JOUER", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_jouer")
     
 def texte_dans_rectangle(x1, y1, x2, y2, text: str, taille=20, ancrage="center", tag=None):
     largeur_champ = x2 - x1
@@ -127,7 +125,7 @@ def modifie_dict_case_grise(case_grise, dict_case_grise):
         if c == case_grise:
             dict_case_grise[c] = "Grey"
         else:
-            dict_case_grise[c] = "White"
+            dict_case_grise[c] = "#513d57"
     return dict_case_grise
     
 def detecte_gris(d: dict):
@@ -144,7 +142,7 @@ def detecte_gris(d: dict):
             return True
     return False
 
-def rectangle_text(carre, text, ancrage="center", taille=20, remplissage="white", tag_rectangle=None, tag_text=None, oui_non=False):
+def rectangle_text(carre, text, ancrage="center", taille=25, remplissage="white", tag_rectangle=None, tag_text=None, oui_non=False):
     """
     Dessine un rectangle et y ajoute du texte
 
@@ -159,11 +157,11 @@ def rectangle_text(carre, text, ancrage="center", taille=20, remplissage="white"
         oui_non (bool, optional): Bool an indiquant si le rectangle doit  tre d cal  de 35 pixels (defaut : False).
     """
     if oui_non:
-        fltk.rectangle(carre[0], carre[1], carre[2], carre[3], remplissage=remplissage, tag=tag_rectangle)
-        fltk.texte(carre[0] + 35, carre[1] + H // 2, text, ancrage=ancrage, taille=taille, tag=tag_text)
+        fltk.rectangle(carre[0], carre[1], carre[2], carre[3], remplissage=remplissage, couleur="#D9F2D1", epaisseur=5, tag=tag_rectangle)
+        fltk.texte(carre[0] + 35, carre[1] + H // 2, text, couleur="#D9F2D1", police="Calibri", ancrage=ancrage, taille=taille, tag=tag_text)
     else:
-        fltk.rectangle(carre[0], carre[1], carre[2], carre[3], remplissage=remplissage, tag=tag_rectangle)
-        fltk.texte(carre[0] + H // 2, carre[1] + H // 2, text, ancrage=ancrage, taille=taille, tag=tag_text)
+        fltk.rectangle(carre[0], carre[1], carre[2], carre[3], remplissage=remplissage, couleur="#D9F2D1", epaisseur=5, tag=tag_rectangle)
+        fltk.texte(carre[0] + H // 2, carre[1] + H // 2, text, couleur="#D9F2D1", police="Calibri", ancrage=ancrage, taille=taille, tag=tag_text)
     
 def pseudo_valide(d: dict, n: int):
     """Regarde si la liste de pseudo est remplie
@@ -191,7 +189,7 @@ def main() -> dict:
     fenetre_acceuil()
     taille_manche = 20
     champ_actif = None
-    dict_case_grise_234 = {carre_2:"White", carre_3:"White", carre_4:"White"}
+    dict_case_grise_234 = {carre_2:"#513d57", carre_3:"#513d57", carre_4:"#513d57"}
     dict_case_grise_oui_non_ia_ale = {case_oui_ia_alea:"White", case_non_ia_alea:"White"}
     dict_case_grise_oui_non_ia_contre = {case_oui_ia_contre:"White", case_non_ia_contre:"White"}
     dict_case_grise_oui_non_bonus = {case_oui_bonus:"White", case_non_bonus:"White"}
@@ -275,8 +273,8 @@ def main() -> dict:
                     valeur_saisi["champ_pseudo"].extend(["", ""])
                     nb_joueurs = 2
                     dict_case_grise_234 = modifie_dict_case_grise(case_grise, dict_case_grise_234)
-                    fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, (LARGEUR*3)//4 - ecart, H*4 + ecart*9, remplissage="white", tag="champ_saisie_pseudo_2")
-                    fltk.rectangle( (LARGEUR*3)//4, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9, remplissage="white", tag="champ_saisie_pseudo_2")
+                    fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, (LARGEUR*3)//4 - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="champ_saisie_pseudo_2")
+                    fltk.rectangle( (LARGEUR*3)//4, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="champ_saisie_pseudo_2")
                 if clique_dans_rectangle(carre_3[0], carre_3[1], carre_3[2], carre_3[3]):
                     for j in range(1,5):
                         if j > 1:
@@ -288,9 +286,9 @@ def main() -> dict:
                     valeur_saisi["champ_pseudo"].extend(["", "", ""])
                     nb_joueurs = 3
                     dict_case_grise_234 = modifie_dict_case_grise(case_grise, dict_case_grise_234) 
-                    fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, (LARGEUR*4)//6 - ecart, H*4 + ecart*9, remplissage="white", tag="champ_saisie_pseudo_3")
-                    fltk.rectangle((LARGEUR*4)//6, H*2 + ecart*9 + H, (LARGEUR*5)//6 - ecart, H*4 + ecart*9, remplissage="white", tag="champ_saisie_pseudo_3")
-                    fltk.rectangle((LARGEUR*5)//6, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9, remplissage="white", tag="champ_saisie_pseudo_3")
+                    fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, (LARGEUR*4)//6 - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="champ_saisie_pseudo_3")
+                    fltk.rectangle((LARGEUR*4)//6, H*2 + ecart*9 + H, (LARGEUR*5)//6 - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="champ_saisie_pseudo_3")
+                    fltk.rectangle((LARGEUR*5)//6, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="champ_saisie_pseudo_3")
                 if clique_dans_rectangle(carre_4[0], carre_4[1], carre_4[2], carre_4[3]):
                     for j in range(1,5):
                         if j > 1:
@@ -302,10 +300,10 @@ def main() -> dict:
                     valeur_saisi["champ_pseudo"].extend(["", "", "", ""])
                     nb_joueurs = 4
                     dict_case_grise_234 = modifie_dict_case_grise(case_grise, dict_case_grise_234)
-                    fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, (LARGEUR*5)//8 - ecart, H*4 + ecart*9, remplissage="white", tag="champ_saisie_pseudo_3")
-                    fltk.rectangle((LARGEUR*5)//8, H*2 + ecart*9 + H, (LARGEUR*6)//8 - ecart, H*4 + ecart*9, remplissage="white", tag="champ_saisie_pseudo_3")
-                    fltk.rectangle((LARGEUR*6)//8, H*2 + ecart*9 + H, (LARGEUR*7)//8 - ecart, H*4 + ecart*9, remplissage="white", tag="champ_saisie_pseudo_3")
-                    fltk.rectangle((LARGEUR*7)//8, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9, remplissage="white", tag="champ_saisie_pseudo_3")
+                    fltk.rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, (LARGEUR*5)//8 - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="champ_saisie_pseudo_3")
+                    fltk.rectangle((LARGEUR*5)//8, H*2 + ecart*9 + H, (LARGEUR*6)//8 - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="champ_saisie_pseudo_3")
+                    fltk.rectangle((LARGEUR*6)//8, H*2 + ecart*9 + H, (LARGEUR*7)//8 - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="champ_saisie_pseudo_3")
+                    fltk.rectangle((LARGEUR*7)//8, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="champ_saisie_pseudo_3")
                 # Vérification des clics dans les cases pour oui et non pour ia_alea
                 if clique_dans_rectangle(case_oui_ia_alea[0], case_oui_ia_alea[1], case_oui_ia_alea[2], case_oui_ia_alea[3]):
                     case_grise = case_oui_ia_alea
@@ -335,7 +333,7 @@ def main() -> dict:
                     dict_case_grise_oui_non_bonus = modifie_dict_case_grise(case_grise, dict_case_grise_oui_non_bonus)
                 # Vérication des clics dans la case jouer
                 if clique_dans_rectangle(case_jouer[0], case_jouer[1], case_jouer[2], case_jouer[3]):
-                    if valeur_saisi["champ_manches"] and pseudo_valide(valeur_saisi, nb_joueurs) and nb_joueurs > 0 and (ia_alea and (not ia_contre) or ia_contre and (not ia_alea)):
+                    if valeur_saisi["champ_manches"] and pseudo_valide(valeur_saisi, nb_joueurs) and nb_joueurs > 0 and (ia_alea and (not ia_contre) or ia_contre and (not ia_alea) or (not ia_alea and not ia_contre)):
                         jouer = True
                     else:
                         # Affichage du message d'erreur pour le nombre de joueurs
@@ -344,78 +342,76 @@ def main() -> dict:
                             L   = len(txt) * 12
                             fltk.efface("case_nombre_joueurs")
                             fltk.efface("text_nombre_joueurs")
-                            fltk.rectangle(L, ecart, LARGEUR - L, ecart + H, remplissage="red", tag="case_nombre_joueurs")
-                            fltk.texte(LARGEUR // 2, 40, "NOMBRES DE JOUEURS", ancrage="center",taille=20, tag="text_nombre_joueurs")
+                            fltk.rectangle(L, ecart, LARGEUR - L, ecart + H, remplissage="#801818", couleur="#D9F2D1", epaisseur=5, tag="case_nombre_joueurs")
+                            fltk.texte(LARGEUR // 2, 35, "NOMBRES DE JOUEURS", couleur="#D9F2D1", ancrage="center", police="Calibri", taille=25, tag="text_nombre_joueurs")
                         if nb_joueurs > 0:
                             txt = "NOMBRES DE JOUEURS"
                             L   = len(txt) * 12
                             fltk.efface("case_nombre_joueurs")
                             fltk.efface("text_nombre_joueurs")
-                            fltk.rectangle(L, ecart, LARGEUR - L, ecart + H, remplissage="white", tag="case_nombre_joueurs")
-                            fltk.texte(LARGEUR // 2, 40, "NOMBRES DE JOUEURS", ancrage="center",taille=20, tag="text_nombre_joueurs")
+                            fltk.rectangle(L, ecart, LARGEUR - L, ecart + H, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_nombre_joueurs")
+                            fltk.texte(LARGEUR // 2, 35, "NOMBRES DE JOUEURS", couleur="#D9F2D1", ancrage="center", police="Calibri", taille=25, tag="text_nombre_joueurs")
                         # Affichage du message d'erreur pour le pseudo
                         if not(pseudo_valide(valeur_saisi, nb_joueurs)):
                             fltk.efface("case_pseudo")
                             fltk.efface("text_pseudo")
-                            fltk.rectangle(ecart,H*2 + ecart*9 + H, LARGEUR//2 - ecart, H*4 + ecart*9, remplissage="red", tag="case_pseudo")
-                            fltk.texte(LARGEUR//4, H*3 + ecart*9 + H//2, "PSEUDO : ", ancrage="center", taille=20, tag="text_pseudo")
+                            fltk.rectangle(ecart,H*2 + ecart*9 + H, LARGEUR//2 - ecart, H*4 + ecart*9, remplissage="#801818", couleur="#D9F2D1", epaisseur=5, tag="case_pseudo")
+                            fltk.texte(LARGEUR//4, H*3 + ecart*9 + H//2, "PSEUDO", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_pseudo")
                         if pseudo_valide(valeur_saisi, nb_joueurs):
                             fltk.efface("case_pseudo")
                             fltk.efface("text_pseudo")
-                            fltk.rectangle(ecart,H*2 + ecart*9 + H, LARGEUR//2 - ecart, H*4 + ecart*9, remplissage="white", tag="case_pseudo")
-                            fltk.texte(LARGEUR//4, H*3 + ecart*9 + H//2, "PSEUDO : ", ancrage="center", taille=20, tag="text_pseudo")
+                            fltk.rectangle(ecart,H*2 + ecart*9 + H, LARGEUR//2 - ecart, H*4 + ecart*9, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_pseudo")
+                            fltk.texte(LARGEUR//4, H*3 + ecart*9 + H//2, "PSEUDO", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_pseudo")
                         # Affichage du message d'erreur pour le nombre de manches
                         if not(valeur_saisi["champ_manches"]):
                             fltk.efface("case_manches")
                             fltk.efface("text_manches")
-                            txt = "NOMBRES DE MANCHES : "
-                            L   = len(txt) * 18
-                            fltk.rectangle(ecart, H*2 + ecart*8, ecart + L, H*2 + ecart*8 + H, remplissage="red", tag="case_manches")
-                            fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, txt, ancrage="center",taille=20, tag="text_manches")
+                            txt = "NOMBRES DE MANCHES"
+                            fltk.rectangle(ecart, H*2 + ecart*8, LARGEUR//2 - ecart, H*2 + ecart*8 + H, remplissage="#801818", couleur="#D9F2D1", epaisseur=5, tag="case_manches")
+                            fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, txt, couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_manches")
                         if valeur_saisi["champ_manches"]:
                             fltk.efface("case_manches")
                             fltk.efface("text_manches")
-                            txt = "NOMBRES DE MANCHES : "
-                            L   = len(txt) * 18
-                            fltk.rectangle(ecart, H*2 + ecart*8, ecart + L, H*2 + ecart*8 + H, remplissage="white", tag="case_manches")
-                            fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, txt, ancrage="center",taille=20, tag="text_manches")
+                            txt = "NOMBRES DE MANCHES"
+                            fltk.rectangle(ecart, H*2 + ecart*8, LARGEUR//2 - ecart, H*2 + ecart*8 + H, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_manches")
+                            fltk.texte(LARGEUR//4, H*2 + ecart*8 + H//2, txt, couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_manches")
                         # Affichage du message d'erreur pour l'ia_alea
-                        if not (ia_alea and (not ia_contre) or ia_contre and (not ia_alea)):
+                        if not (ia_alea and (not ia_contre) or ia_contre and (not ia_alea) or (not ia_alea and not ia_contre)):
                             fltk.efface("case_ia_alea")
                             fltk.efface("text_ia_alea")
                             fltk.efface("case_ia_contre")
                             fltk.efface("text_ia_contre")
-                            fltk.rectangle(ecart,H*2 + ecart*10 + 100, LARGEUR//2 - 100, H*4 + ecart*10 + H, remplissage="red", tag="case_ia_alea")
-                            fltk.texte(LARGEUR//4 -H, H*4 + ecart*10 + H//2, "IA ALÉATOIRE", ancrage="center", taille=20, tag="text_ia_alea")
-                            fltk.rectangle(ecart,H*2 + ecart*11 + 150, LARGEUR//2 - 100, H*5 + ecart*11 + H, remplissage="red", tag="case_ia_contre")
-                            fltk.texte(LARGEUR//4 -H, H*5 + ecart*11 + H//2, "CONTRE IA", ancrage="center", taille=20, tag="text_ia_contre")
-                        if ia_alea and (not ia_contre) or ia_contre and (not ia_alea):
+                            fltk.rectangle(ecart,H*2 + ecart*10 + 100, LARGEUR//2 - 100, H*4 + ecart*10 + H, remplissage="#801818", couleur="#D9F2D1", epaisseur=5, tag="case_ia_alea")
+                            fltk.texte(LARGEUR//4 -H, H*4 + ecart*10 + H//2, "IA ALÉATOIRE", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_ia_alea")
+                            fltk.rectangle(ecart,H*2 + ecart*11 + 150, LARGEUR//2 - 100, H*5 + ecart*11 + H, remplissage="#801818", couleur="#D9F2D1", epaisseur=5, tag="case_ia_contre")
+                            fltk.texte(LARGEUR//4 -H, H*5 + ecart*11 + H//2, "CONTRE IA", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_ia_contre")
+                        if ia_alea and (not ia_contre) or ia_contre and (not ia_alea) or (not ia_alea and not ia_contre):
                             fltk.efface("case_ia_alea")
                             fltk.efface("text_ia_alea")
                             fltk.efface("case_ia_contre")
                             fltk.efface("text_ia_contre")
-                            fltk.rectangle(ecart,H*2 + ecart*10 + 100, LARGEUR//2 - 100, H*4 + ecart*10 + H, remplissage="white", tag="case_ia_alea")
-                            fltk.texte(LARGEUR//4 -H, H*4 + ecart*10 + H//2, "IA ALÉATOIRE", ancrage="center", taille=20, tag="text_ia_alea")
-                            fltk.rectangle(ecart,H*2 + ecart*11 + 150, LARGEUR//2 - 100, H*5 + ecart*11 + H, remplissage="white", tag="case_ia_contre")
-                            fltk.texte(LARGEUR//4 -H, H*5 + ecart*11 + H//2, "CONTRE IA", ancrage="center", taille=20, tag="text_ia_contre")
+                            fltk.rectangle(ecart,H*2 + ecart*10 + 100, LARGEUR//2 - 100, H*4 + ecart*10 + H, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_ia_alea")
+                            fltk.texte(LARGEUR//4 -H, H*4 + ecart*10 + H//2, "IA ALÉATOIRE", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_ia_alea")
+                            fltk.rectangle(ecart,H*2 + ecart*11 + 150, LARGEUR//2 - 100, H*5 + ecart*11 + H, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_ia_contre")
+                            fltk.texte(LARGEUR//4 -H, H*5 + ecart*11 + H//2, "CONTRE IA", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_ia_contre")
             # Gestion des touches
             if nom_ev == "Touche" and champ_actif:
                 if param_ev.keysym == "BackSpace":
                     if champ_actif == "champ_pseudo":
-                        largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Consolas") 
+                        largeur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Calibri")[0] + 5
                         if taille[i] < 20:
                             while largeur < largeur_champ:
                                 taille[i] = taille[i] + 1
-                                largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Consolas") 
+                                largeur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Calibri")[0] + 5
                             valeur_saisi[champ_actif][i] = valeur_saisi[champ_actif][i][:-1]    
                         else:
                             valeur_saisi[champ_actif][i] = valeur_saisi[champ_actif][i][:-1]  
                     elif champ_actif == "champ_manches":
-                        largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Consolas")
+                        largeur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Calibri")[0] + 5
                         if taille_manche < 20:
                             while largeur < largeur_champ:
                                 taille_manche = taille_manche + 1
-                                largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Consolas")
+                                largeur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Calibri")[0] + 5
                             valeur_saisi[champ_actif] = valeur_saisi[champ_actif][:-1] 
                             nb_manches = nb_manches[:-1]
                         else:
@@ -427,23 +423,23 @@ def main() -> dict:
                             i = i + 1 if i < nb_joueurs-1 else 0
                             tag_champ_actif = f"case_champ_pseudo_{i+1}"
                         else:
-                            largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Consolas")
+                            largeur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Calibri")[0] + 5
                             if largeur > largeur_champ:
                                 if taille[i] > 10:
                                     while largeur > largeur_champ:
                                         taille[i] -= 1
-                                        largeur, hauteur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Consolas") 
+                                        largeur = fltk.taille_texte( valeur_saisi[champ_actif][i] + param_ev.char, taille=taille[i], police="Calibri")[0] + 5
                                     valeur_saisi[champ_actif][i] += param_ev.char
                             else:
                                 valeur_saisi[champ_actif][i] += param_ev.char
                     else:
                         if param_ev.char.isdigit():
-                            largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Consolas")
+                            largeur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Calibri")[0] + 5
                             if largeur > largeur_champ:
                                 if taille_manche > 10:
                                     while largeur > largeur_champ:
                                         taille_manche -= 1
-                                        largeur, hauteur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Consolas")
+                                        largeur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Calibri")[0] + 5
                                     valeur_saisi["champ_manches"] += param_ev.char
                                     nb_manches += param_ev.char
                             else:
@@ -453,14 +449,14 @@ def main() -> dict:
                 fltk.efface(tag_champ_actif)
                 if champ_actif == "champ_pseudo":
                     if nb_joueurs == 2:
-                        fltk.texte(LARGEUR*5//8 if i == 0 else LARGEUR*7//8, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], police="Consolas", ancrage="center", taille=taille[i], tag=tag_champ_actif)
+                        fltk.texte(LARGEUR*5//8 if i == 0 else LARGEUR*7//8, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], couleur="#D9F2D1", police="Calibri", ancrage="center", taille=taille[i], tag=tag_champ_actif)
                     elif nb_joueurs == 3:
-                        fltk.texte(LARGEUR*7//12 if i == 0 else LARGEUR*9//12 if i == 1 else LARGEUR*11//12, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], police="Consolas", ancrage="center", taille=taille[i], tag=tag_champ_actif)
+                        fltk.texte(LARGEUR*7//12 if i == 0 else LARGEUR*9//12 if i == 1 else LARGEUR*11//12, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], couleur="#D9F2D1", police="Calibri", ancrage="center", taille=taille[i], tag=tag_champ_actif)
                     elif nb_joueurs == 4:
-                        fltk.texte(LARGEUR*9//16 if i == 0 else LARGEUR*11//16 if i == 1 else LARGEUR*13//16 if i == 2 else LARGEUR*15//16, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], police="Consolas", ancrage="center", taille=taille[i], tag=tag_champ_actif)
+                        fltk.texte(LARGEUR*9//16 if i == 0 else LARGEUR*11//16 if i == 1 else LARGEUR*13//16 if i == 2 else LARGEUR*15//16, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], couleur="#D9F2D1", police="Calibri", ancrage="center", taille=taille[i], tag=tag_champ_actif)
                 elif champ_actif == "champ_manches":
                     
-                    fltk.texte(LARGEUR - LARGEUR//4, H*2 + ecart*8 + H//2, valeur_saisi["champ_manches"],police="Consolas", ancrage="center", taille=taille_manche, tag=tag_champ_actif)
+                    fltk.texte(LARGEUR - LARGEUR//4, H*2 + ecart*8 + H//2, valeur_saisi["champ_manches"], couleur="#D9F2D1", police="Calibri", ancrage="center", taille=taille_manche, tag=tag_champ_actif)
             elif nom_ev == "Quitte":
                 break
                 
