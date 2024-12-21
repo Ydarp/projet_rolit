@@ -7,6 +7,7 @@ def resultat(score_partie, manches_gagnees) -> None:
     
     fltk.rectangle(10, 10, 80, 60, remplissage="white", tag="case_retour")
     Acceuil.texte_dans_rectangle(10, 10, 80, 60, "NEW GAME", tag="text_retour")
+    #case_retour
     while True:
         ev = fltk.donne_ev()
         if ev != None:
