@@ -271,6 +271,8 @@ def obtenir_coordonnees(t: list, alea: bool, graphique: bool = False):
                     xs, ys = fltk.abscisse(ev), fltk.ordonnee(ev)
                     if xs <= 150 or xs >= 650 or ys <= 150 or ys >= 650:
                         print("non")
+                    if 20 <= xs <=LARGEUR//4 - 20 and LONGUEUR - 100 <= ys <= LONGUEUR - 50:
+                        return "save"
                     if  20 <= xs <= LARGEUR//4 - 20 and 20 <= ys <= 70:
                         return True
                     else:
@@ -403,6 +405,7 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
             if ev:
                 nom_ev, param_ev = ev
                 if nom_ev == "Quitte":
+                    tab = {"tableau": t, }
                     return False
                 elif nom_ev == "ClicGauche":
                     if Accueil.clique_dans_rectangle(20, 20, LARGEUR//4 - 20, 70):
@@ -421,6 +424,8 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
                 values = obtenir_coordonnees(t, False, graphique)
                 if values == True:
                     return True
+                if values == "save":
+                    return False
                 x, y = values
                 t[x][y] = c
                 capture(t,x,y)
@@ -430,6 +435,8 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
             values = obtenir_coordonnees(t, alea_temp, graphique)
             if values == True:
                     return True
+            if values == "save":
+                    return False
             x, y = values
             t[x][y] = c
             capture(t,x,y)

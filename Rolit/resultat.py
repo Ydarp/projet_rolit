@@ -1,4 +1,4 @@
-import fltk,Accueil
+import fltk, Accueil
 
 def resultat(score_partie, manches_gagnees) -> None:
     fltk.cree_fenetre(800, 800)
