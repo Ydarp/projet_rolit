@@ -76,7 +76,7 @@ def fenetre_acceuil() -> None:
     fltk.rectangle(case_jouer[0], case_jouer[1], case_jouer[2], case_jouer[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_jouer")
     fltk.texte(case_jouer[2] - H, case_jouer[1] + H // 2, "JOUER", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_jouer")
     
-def texte_dans_rectangle(x1, y1, x2, y2, text: str, taille=20, ancrage="center", tag=None):
+def texte_dans_rectangle(x1, y1, x2, y2, text: str, taille=25, couleur="black", police="Consolas", ancrage="center", tag=None):
     largeur_champ = x2 - x1
     hauteur_champ = y2 - y1
     nb_espace = detecte_espace(text)
@@ -88,8 +88,8 @@ def texte_dans_rectangle(x1, y1, x2, y2, text: str, taille=20, ancrage="center",
                 largeur = fltk.taille_texte(text, taille=taille, police="Consolas")[0] + nb_espace * (taille+5)
             print(largeur, largeur_champ)
     if ancrage=="center":
-        return fltk.texte(x1 + largeur_champ // 2, y1 + hauteur_champ // 2, text, ancrage=ancrage, taille=taille, tag=tag)
-    return fltk.texte(x1, y1, text, ancrage=ancrage, taille=taille, tag=tag)
+        return fltk.texte(x1 + largeur_champ // 2, y1 + hauteur_champ // 2, text, couleur=couleur, police=police, ancrage=ancrage, taille=taille, tag=tag)
+    return fltk.texte(x1, y1, text, couleur=couleur, ancrage=ancrage, police=police, taille=taille, tag=tag)
 
 def detecte_espace(text: str):
     t = text.split()
