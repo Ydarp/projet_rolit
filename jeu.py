@@ -396,7 +396,14 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
             affichage_tableau(t) 
             print("Tour de ", c_j[c],"qui est ",c,".")
         if graphique:
-            #grille()
+            ev = fltk.donne_ev()
+            if ev:
+                nom_ev, param_ev = ev
+                if nom_ev == "Quitte":
+                    return False
+                elif nom_ev == "ClicGauche":
+                    if Acceuil.clique_dans_rectangle(20, 20, LARGEUR//4 - 20, 70):
+                        return True
             pion(t)
             fltk.efface("text_tour")
             fltk.efface("text_score")
@@ -518,7 +525,7 @@ def fenetre_jeu() -> None:
     fltk.rectangle(LARGEUR//4,20,LARGEUR*3//4,20 + 50, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5)#rectangle pour le joueur qui joue
     fltk.rectangle(LARGEUR*3//4 + 20, 20, LARGEUR - 20, 150 - 20, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5)#rectangle du score
     fltk.rectangle(20, 20, LARGEUR//4 - 20, 70, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_retour")
-    Acceuil.texte_dans_rectangle(20, 20, LARGEUR//4 - 20, 70, "NEW GAME", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_retour")
+    Acceuil.texte_dans_rectangle(20, 20, LARGEUR//4 - 20, 70, "ACCEUIL", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_retour")
     
 #main 
 def main(d: dict, graphique: bool):
@@ -547,14 +554,14 @@ def main(d: dict, graphique: bool):
             if d["bonus"]:
                 b = bonus(int(d["nb_joueurs"]))
                 for e in b:
-                    fltk.rectangle(150 + e[0]*TAILLE_CASE_X, 150 + e[1]*TAILLE_CASE_Y, 150 + e[0]*TAILLE_CASE_X + TAILLE_CASE_X, 150 + e[1]*TAILLE_CASE_Y + TAILLE_CASE_Y, remplissage="purple", tag="bonus")
+                    fltk.rectangle(150 + e[0]*TAILLE_CASE_X, 150 + e[1]*TAILLE_CASE_Y, 150 + e[0]*TAILLE_CASE_X + TAILLE_CASE_X, 150 + e[1]*TAILLE_CASE_Y + TAILLE_CASE_Y, remplissage="#FAA401", tag="bonus")
             else:
                 b = []
             grille()
             v = jouer_manche(t, c_j, d["ia_alea"],d["ia_contre"],b, graphique=True)
-            if v == True:
+            if v in [True, False]:
                 fltk.ferme_fenetre()
-                return True
+                return v
             score_m = compte_couleur(t,b)
             afficher_resultat_manche(score_m, manches_gagnees, c_j, graphique=True)
             score_p = score_m if k == 0 else additionne_dict(score_p,score_m)

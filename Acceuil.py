@@ -86,7 +86,6 @@ def texte_dans_rectangle(x1, y1, x2, y2, text: str, taille=25, couleur="black", 
             while largeur > largeur_champ:
                 taille -= 1
                 largeur = fltk.taille_texte(text, taille=taille, police="Consolas")[0] + nb_espace * (taille+5)
-            print(largeur, largeur_champ)
     if ancrage=="center":
         return fltk.texte(x1 + largeur_champ // 2, y1 + hauteur_champ // 2, text, couleur=couleur, police=police, ancrage=ancrage, taille=taille, tag=tag)
     return fltk.texte(x1, y1, text, couleur=couleur, ancrage=ancrage, police=police, taille=taille, tag=tag)
