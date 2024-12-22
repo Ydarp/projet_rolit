@@ -527,8 +527,10 @@ def fenetre_jeu() -> None:
     
     fltk.rectangle(LARGEUR//4,20,LARGEUR*3//4,20 + 50, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5)#rectangle du nbr de manche
     fltk.rectangle(LARGEUR*3//4 + 20, 20, LARGEUR - 20, 150 - 20, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5)#rectangle du score
-    fltk.rectangle(20, 20, LARGEUR//4 - 20, 70, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_retour")
-    Accueil.texte_dans_rectangle(20, 20, LARGEUR//4 - 20, 70, "ACCEUIL", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_retour")
+    fltk.rectangle(20, 20, LARGEUR//4 - 20, 70, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_retour") #case Accueil
+    Accueil.texte_dans_rectangle(20, 20, LARGEUR//4 - 20, 70, "ACCEUIL", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_retour") #case Acueil
+    fltk.rectangle(20, LONGUEUR - 100, LARGEUR//4 - 20, LONGUEUR - 50, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_quitter") #case save and quitter
+    Accueil.texte_dans_rectangle(20, LONGUEUR - 100, LARGEUR//4 - 20, LONGUEUR - 50, "SAVE & LEAVE", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=40, tag="text_quitter") #case save and quitter
     
 #main 
 def main(d: dict, graphique: bool):
