@@ -1,9 +1,9 @@
-import Acceuil,jeu,resultat,fltk
+import Accueil,jeu,resultat,fltk
 
 def rolit():
     game = True
     while game:
-        d = Acceuil.main() #{"champ_manches": nb_manches, "champ_pseudo": pseudo,"nb_joueurs": nb_joueurs, "ia_alea": ia_alea, "ia_contre": ia_contre, "bonus": bonus}
+        d = Accueil.main() #{"champ_manches": nb_manches, "champ_pseudo": pseudo,"nb_joueurs": nb_joueurs, "ia_alea": ia_alea, "ia_contre": ia_contre, "bonus": bonus}
         values = jeu.main(d, True)
         if values in [True, False]:
             game = values

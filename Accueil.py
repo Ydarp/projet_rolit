@@ -11,7 +11,9 @@ carre_2, carre_3, carre_4 = (xmin, ymin, xmax, ymax), (LARGEUR//2 - 25, ymin, LA
 case_oui_ia_alea, case_non_ia_alea = (LARGEUR//2 - H, H*2 + ecart*10 + 100, LARGEUR//2 + 20, H*4 + ecart*10 + H), (LARGEUR//2 + 70, H*2 + ecart*10 + 100, LARGEUR//2 + 140, H*4 + ecart*10 + H)
 case_oui_ia_contre, case_non_ia_contre = (LARGEUR//2 - H, H*2 + ecart*11 + 100 + H, LARGEUR//2 + 20, H*4 + ecart*11 + H*2), (LARGEUR//2 + 70, H*2 + ecart*11 + 100 + H, LARGEUR//2 + 140, H*4 + ecart*11 + H*2)
 case_oui_bonus, case_non_bonus = (LARGEUR//2 - H, H*2 + ecart*12 + 100 + H*2, LARGEUR//2 + 20, H*4 + ecart*12 + H*3), (LARGEUR//2 + 70, H*2 + ecart*12 + 100 + H*2, LARGEUR//2 + 140, H*4 + ecart*12 + H*3)
-case_jouer = (ecart, H*7 + ecart*13, ecart + H*2, H*8 + ecart*13)
+case_save = (ecart, H*7 + ecart*14, ecart + H*2, H*8 + ecart*14)
+case_jouer = (ecart, H*8 + ecart*16, ecart + H*2, H*9 + ecart*16)
+
 
 def fenetre_acceuil() -> None:
     """Cree la fenetre de départ et ajoute les cases d'options
@@ -72,9 +74,16 @@ def fenetre_acceuil() -> None:
     fltk.rectangle( case_non_bonus[0], case_non_bonus[1], case_non_bonus[2], case_non_bonus[3], remplissage="grey", couleur="#D9F2D1", epaisseur=5, tag="case_non_bonus")
     fltk.texte(LARGEUR//2 + 105, H*6 + ecart*12 + H//2, "NON", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_non_bonus")
     
+    #Save
+    fltk.rectangle(case_save[0], case_save[1], case_save[2], case_save[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_save")
+    fltk.texte(case_save[2] - H, case_save[1] + H // 2, "SAVE", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_save")
+    #champ de saisie
+    fltk.rectangle(case_save[2] + ecart*2, case_save[1], LARGEUR - ecart*2, case_save[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_save")
+    
     #Jouer
     fltk.rectangle(case_jouer[0], case_jouer[1], case_jouer[2], case_jouer[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_jouer")
     fltk.texte(case_jouer[2] - H, case_jouer[1] + H // 2, "JOUER", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_jouer")
+    
     
 def texte_dans_rectangle(x1, y1, x2, y2, text: str, taille=25, couleur="black", police="Consolas", ancrage="center", tag=None):
     largeur_champ = x2 - x1
@@ -88,7 +97,7 @@ def texte_dans_rectangle(x1, y1, x2, y2, text: str, taille=25, couleur="black", 
                 largeur = fltk.taille_texte(text, taille=taille, police="Consolas")[0] + nb_espace * (taille+5)
     if ancrage=="center":
         return fltk.texte(x1 + largeur_champ // 2, y1 + hauteur_champ // 2, text, couleur=couleur, police=police, ancrage=ancrage, taille=taille, tag=tag)
-    return fltk.texte(x1, y1, text, couleur=couleur, ancrage=ancrage, police=police, taille=taille, tag=tag)
+    return fltk.texte(x1, y1 + hauteur_champ // 2, text, couleur=couleur, ancrage=ancrage, police=police, taille=taille, tag=tag)
 
 def detecte_espace(text: str):
     t = text.split()
@@ -186,16 +195,16 @@ def main() -> dict:
         dict: Toutes les données nécessaires au jeu
     """
     fenetre_acceuil()
-    taille_manche = 20
+    taille_manche, taille_save = 20, 20
     champ_actif = None
     dict_case_grise_234 = {carre_2:"#513d57", carre_3:"#513d57", carre_4:"#513d57"}
     dict_case_grise_oui_non_ia_ale = {case_oui_ia_alea:"White", case_non_ia_alea:"White"}
     dict_case_grise_oui_non_ia_contre = {case_oui_ia_contre:"White", case_non_ia_contre:"White"}
     dict_case_grise_oui_non_bonus = {case_oui_bonus:"White", case_non_bonus:"White"}
-    nb_joueurs, nb_manches, pseudo, ia_alea, ia_contre, bonus = 0, "",[], False, False, False #Tous les parametres par defaut
+    nb_joueurs, nb_manches, pseudo, ia_alea, ia_contre, bonus, save = 0, "",[], False, False, False, "" #Tous les parametres par defaut
     jouer = False
     while not(jouer):
-        valeur_saisi = {"champ_manches": nb_manches, "champ_pseudo": pseudo,"nb_joueurs": nb_joueurs, "ia_alea": ia_alea, "ia_contre": ia_contre, "bonus": bonus}
+        valeur_saisi = {"champ_manches": nb_manches, "champ_pseudo": pseudo,"nb_joueurs": nb_joueurs, "ia_alea": ia_alea, "ia_contre": ia_contre, "bonus": bonus, "save": save}
         ev = fltk.donne_ev()
         if ev:
             nom_ev, param_ev = ev
@@ -258,7 +267,7 @@ def main() -> dict:
                     largeur_champ = (LARGEUR - ecart) - ((LARGEUR*7)//8)
                     i = 3
                 # si cest pas dans les champs de saisies
-                if nb_joueurs == 0 and not (clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*8, LARGEUR - ecart, H*2 + ecart*8 + H) or clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9)):
+                if nb_joueurs == 0 and not (clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*8, LARGEUR - ecart, H*2 + ecart*8 + H) or clique_dans_rectangle(LARGEUR//2 + 10, H*2 + ecart*9 + H, LARGEUR - ecart, H*4 + ecart*9)) and not clique_dans_rectangle(case_save[2] + ecart*2, case_save[1], LARGEUR - ecart*2, case_save[3]):
                     champ_actif = None
                 # Vérification des clics dans les cases pour 2, 3 et 4
                 if clique_dans_rectangle(carre_2[0], carre_2[1], carre_2[2], carre_2[3]):
@@ -330,6 +339,12 @@ def main() -> dict:
                     case_grise = case_non_bonus
                     bonus = False
                     dict_case_grise_oui_non_bonus = modifie_dict_case_grise(case_grise, dict_case_grise_oui_non_bonus)
+                # Vérification des clics dans le champs de saisie de save
+                if clique_dans_rectangle(case_save[2] + ecart*2, case_save[1], LARGEUR - ecart*2, case_save[3]):
+                    taille_save = taille_save
+                    champ_actif = "save"
+                    tag_champ_actif = "case_text_champ_saisie_save"
+                    largeur_champ = LARGEUR - ecart*2 - case_save[2] - ecart*2
                 # Vérication des clics dans la case jouer
                 if clique_dans_rectangle(case_jouer[0], case_jouer[1], case_jouer[2], case_jouer[3]):
                     if valeur_saisi["champ_manches"] and pseudo_valide(valeur_saisi, nb_joueurs) and nb_joueurs > 0 and (ia_alea and (not ia_contre) or ia_contre and (not ia_alea) or (not ia_alea and not ia_contre)):
@@ -416,6 +431,17 @@ def main() -> dict:
                         else:
                             valeur_saisi[champ_actif] = valeur_saisi[champ_actif][:-1] 
                             nb_manches = nb_manches[:-1]
+                    else:
+                        largeur = fltk.taille_texte(valeur_saisi[champ_actif] + param_ev.char, taille=taille_save, police="Calibri")[0] + 5
+                        if taille_save < 20:
+                            while largeur < largeur_champ:
+                                taille_save = taille_save + 1
+                                largeur = fltk.taille_texte(valeur_saisi[champ_actif] + param_ev.char, taille=taille_save, police="Calibri")[0] + 5
+                            valeur_saisi[champ_actif] = valeur_saisi[champ_actif][:-1]
+                            save = save[:-1]
+                        else:
+                            valeur_saisi[champ_actif] = valeur_saisi[champ_actif][:-1]
+                            save = save[:-1]
                 else:
                     if champ_actif == "champ_pseudo" and param_ev.keysym != "space":
                         if param_ev.keysym == "Return" or param_ev.keysym == "Tab": #passe a la prochaine case
@@ -431,7 +457,7 @@ def main() -> dict:
                                     valeur_saisi[champ_actif][i] += param_ev.char
                             else:
                                 valeur_saisi[champ_actif][i] += param_ev.char
-                    else:
+                    elif champ_actif == "champ_manches":
                         if param_ev.char.isdigit():
                             largeur = fltk.taille_texte(valeur_saisi["champ_manches"] + param_ev.char, taille=taille_manche, police="Calibri")[0] + 5
                             if largeur > largeur_champ:
@@ -444,6 +470,18 @@ def main() -> dict:
                             else:
                                 valeur_saisi["champ_manches"] += param_ev.char
                                 nb_manches += param_ev.char
+                    else:
+                        largeur = fltk.taille_texte(valeur_saisi[champ_actif] + param_ev.char, taille=taille_save, police="Calibri")[0] + 5
+                        if largeur > largeur_champ:
+                            if taille_save > 10:
+                                while largeur > largeur_champ:
+                                    taille_save -= 1
+                                    largeur = fltk.taille_texte(valeur_saisi[champ_actif] + param_ev.char, taille=taille_save, police="Calibri")[0] + 5
+                                valeur_saisi[champ_actif] += param_ev.char
+                                save += param_ev.char
+                        else:
+                            valeur_saisi[champ_actif] += param_ev.char
+                            save += param_ev.char
                 # Mise à jour de l'affichage
                 fltk.efface(tag_champ_actif)
                 if champ_actif == "champ_pseudo":
@@ -454,11 +492,11 @@ def main() -> dict:
                     elif nb_joueurs == 4:
                         fltk.texte(LARGEUR*9//16 if i == 0 else LARGEUR*11//16 if i == 1 else LARGEUR*13//16 if i == 2 else LARGEUR*15//16, H*3 + ecart*9 + H//2, valeur_saisi["champ_pseudo"][i], couleur="#D9F2D1", police="Calibri", ancrage="center", taille=taille[i], tag=tag_champ_actif)
                 elif champ_actif == "champ_manches":
-                    
                     fltk.texte(LARGEUR - LARGEUR//4, H*2 + ecart*8 + H//2, valeur_saisi["champ_manches"], couleur="#D9F2D1", police="Calibri", ancrage="center", taille=taille_manche, tag=tag_champ_actif)
+                elif champ_actif == "save":
+                    fltk.texte(((LARGEUR - ecart*2)+(case_save[2] + ecart*2))/2, (case_save[3] + case_save[1])/2, valeur_saisi["save"], couleur="#D9F2D1", police="Calibri", ancrage="center", taille=taille_save, tag=tag_champ_actif)
             elif nom_ev == "Quitte":
                 break
-                
         #Vérifie si les cases sont grises
         if detecte_gris(dict_case_grise_234):
             for j in range(2,5):
@@ -487,6 +525,7 @@ def main() -> dict:
             rectangle_text(case_non_bonus, "NON", remplissage=dict_case_grise_oui_non_bonus[case_non_bonus], tag_rectangle="case_non_bonus", tag_text="text_non_bonus", oui_non=True)
         fltk.mise_a_jour() 
     fltk.ferme_fenetre()
+    print(valeur_saisi["save"])
     return valeur_saisi 
       
 if __name__ == "__main__":
