@@ -1,4 +1,4 @@
-import fltk
+import fltk, json
 
 LARGEUR = 800
 HAUTEUR = 800
@@ -13,7 +13,6 @@ case_oui_ia_contre, case_non_ia_contre = (LARGEUR//2 - H, H*2 + ecart*11 + 100 +
 case_oui_bonus, case_non_bonus = (LARGEUR//2 - H, H*2 + ecart*12 + 100 + H*2, LARGEUR//2 + 20, H*4 + ecart*12 + H*3), (LARGEUR//2 + 70, H*2 + ecart*12 + 100 + H*2, LARGEUR//2 + 140, H*4 + ecart*12 + H*3)
 case_save = (ecart, H*7 + ecart*14, ecart + H*2, H*8 + ecart*14)
 case_jouer = (ecart, H*8 + ecart*16, ecart + H*2, H*9 + ecart*16)
-
 
 def fenetre_acceuil() -> None:
     """Cree la fenetre de départ et ajoute les cases d'options
@@ -78,8 +77,8 @@ def fenetre_acceuil() -> None:
     fltk.rectangle(case_save[0], case_save[1], case_save[2], case_save[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_save")
     fltk.texte(case_save[2] - H, case_save[1] + H // 2, "SAVE", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_save")
     #champ de saisie
-    fltk.rectangle(case_save[2] + ecart*2, case_save[1], LARGEUR - ecart*2, case_save[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_save")
-    
+    fltk.rectangle(case_save[2] + ecart*2, case_save[1], LARGEUR - ecart*2, case_save[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_save")    
+    texte_dans_rectangle(case_save[2] + ecart*2, case_save[1], LARGEUR - ecart*2, case_save[3],nom_fichier_valide(), couleur="#D9F2D1", police="Calibri", ancrage="center", taille=25, tag="case_text_champ_saisie_save")
     #Jouer
     fltk.rectangle(case_jouer[0], case_jouer[1], case_jouer[2], case_jouer[3], remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_jouer")
     fltk.texte(case_jouer[2] - H, case_jouer[1] + H // 2, "JOUER", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_jouer")
@@ -188,6 +187,37 @@ def pseudo_valide(d: dict, n: int):
             return False
     return True
     
+def detecte_si_json_existe(nom_fichier: str):
+    reader = open("Rolit\save.json", "r", encoding="utf-8")
+    try:
+        data = json.load(reader)
+    except json.decoder.JSONDecodeError:
+        data = []
+    if data:
+        for d in data:
+            if d["save"] == nom_fichier:
+                return True
+    return False
+        
+def nom_fichier_valide():
+    if not detecte_si_json_existe("Sauvegarde"):
+        return "Sauvegarde"
+    else:
+        i = 1
+        while detecte_si_json_existe(f"Sauvegarde({i})"):
+            i += 1 
+        return f"Sauvegarde({i})"
+    
+def read_json(nom_fichier: str):
+    reader = open("Rolit\save.json", "r", encoding="utf-8")
+    try:
+        data = json.load(reader)
+    except json.decoder.JSONDecodeError:
+        data = []
+    for d in data:
+        if d["save"] == nom_fichier:
+            return d
+ 
 def main() -> dict:
     """Fonction principale qui tant que jouer est faux, va actualiser la page et prendre les données que l'utilisateur va renseigner
 
@@ -195,16 +225,16 @@ def main() -> dict:
         dict: Toutes les données nécessaires au jeu
     """
     fenetre_acceuil()
-    taille_manche, taille_save = 20, 20
+    taille_manche, taille_save = 25, 25
     champ_actif = None
     dict_case_grise_234 = {carre_2:"#513d57", carre_3:"#513d57", carre_4:"#513d57"}
     dict_case_grise_oui_non_ia_ale = {case_oui_ia_alea:"White", case_non_ia_alea:"White"}
     dict_case_grise_oui_non_ia_contre = {case_oui_ia_contre:"White", case_non_ia_contre:"White"}
     dict_case_grise_oui_non_bonus = {case_oui_bonus:"White", case_non_bonus:"White"}
-    nb_joueurs, nb_manches, pseudo, ia_alea, ia_contre, bonus, save = 0, "",[], False, False, False, "" #Tous les parametres par defaut
+    nb_joueurs, nb_manches, pseudo, ia_alea, ia_contre, bonus, save = 0, "",[], False, False, False, nom_fichier_valide() #Tous les parametres par defaut
     jouer = False
     while not(jouer):
-        valeur_saisi = {"champ_manches": nb_manches, "champ_pseudo": pseudo,"nb_joueurs": nb_joueurs, "ia_alea": ia_alea, "ia_contre": ia_contre, "bonus": bonus, "save": save}
+        valeur_saisi = {"tableau": None, "couleur_joueur": None, "manche_actuelle": None, "score": None, "manches_gagnees": None, "graphique": True, "champ_manches": nb_manches, "champ_pseudo": pseudo,"nb_joueurs": nb_joueurs, "ia_alea": ia_alea, "ia_contre": ia_contre, "bonus": bonus, "save": save}
         ev = fltk.donne_ev()
         if ev:
             nom_ev, param_ev = ev
@@ -347,7 +377,10 @@ def main() -> dict:
                     largeur_champ = LARGEUR - ecart*2 - case_save[2] - ecart*2
                 # Vérication des clics dans la case jouer
                 if clique_dans_rectangle(case_jouer[0], case_jouer[1], case_jouer[2], case_jouer[3]):
-                    if valeur_saisi["champ_manches"] and pseudo_valide(valeur_saisi, nb_joueurs) and nb_joueurs > 0 and (ia_alea and (not ia_contre) or ia_contre and (not ia_alea) or (not ia_alea and not ia_contre)):
+                    if detecte_si_json_existe(valeur_saisi["save"]):
+                        valeur_saisi = read_json(valeur_saisi["save"])
+                        jouer = True
+                    elif valeur_saisi["champ_manches"] and pseudo_valide(valeur_saisi, nb_joueurs) and nb_joueurs > 0 and (ia_alea and (not ia_contre) or ia_contre and (not ia_alea) or (not ia_alea and not ia_contre)):
                         jouer = True
                     else:
                         # Affichage du message d'erreur pour le nombre de joueurs

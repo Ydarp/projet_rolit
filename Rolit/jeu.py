@@ -1,4 +1,4 @@
-import fltk, random, time, Accueil
+import fltk, random, time, Accueil, json
 
 
 #Variables de la fenetre graphique
@@ -379,7 +379,7 @@ def init_partie():
     manches_gagnees = {c: 0 for c in list(c_j.keys())} #dictionnaire nombre de manche gagnée
     return nb_j,nb_m, alea, c_j, manches_gagnees , contre_ia, b
 
-def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, graphique: bool = False):
+def jouer_manche(t: list, c_j: dict, alea: bool, contre_ia: bool, bonus: list, nb_m: int = 1, manches_gagnees: dict = {}, score_p: dict = {}, save: str = "", k: int = 1, graphique: bool = False):
     """joue une manche
 
     Args:
@@ -405,7 +405,9 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
             if ev:
                 nom_ev, param_ev = ev
                 if nom_ev == "Quitte":
-                    tab = {"tableau": t, }
+                    score_p = compte_couleur(t, bonus, graphique) if score_p is None else additionne_dict(score_p, compte_couleur(t, bonus, graphique))
+                    tab_save = {"tableau": t, "couleur_joueur": c_j, "ia_alea": alea, "ia_contre": contre_ia, "bonus": bonus, "score": score_p, "champ_manches": nb_m, "manches_gagnees": manches_gagnees, "manche_actuelle": k, "save": save, "graphique": graphique}
+                    save_json(tab_save)
                     return False
                 elif nom_ev == "ClicGauche":
                     if Accueil.clique_dans_rectangle(20, 20, LARGEUR//4 - 20, 70):
@@ -425,6 +427,9 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
                 if values == True:
                     return True
                 if values == "save":
+                    score_p = compte_couleur(t, bonus, graphique) if score_p is None else additionne_dict(score_p, compte_couleur(t, bonus, graphique))
+                    tab_save = {"tableau": t, "couleur_joueur": c_j, "ia_alea": alea, "ia_contre": contre_ia, "bonus": bonus, "score": score_p, "champ_manches": nb_m, "manches_gagnees": manches_gagnees, "save": save, "manche_actuelle": k, "graphique": graphique}
+                    save_json(tab_save)
                     return False
                 x, y = values
                 t[x][y] = c
@@ -436,6 +441,9 @@ def jouer_manche(t: list, c_j: dict, alea: bool,contre_ia: bool,bonus: list, gra
             if values == True:
                     return True
             if values == "save":
+                    score_p = compte_couleur(t, bonus, graphique) if score_p is None else additionne_dict(score_p, compte_couleur(t, bonus, graphique))
+                    tab_save = {"tableau": t, "couleur_joueur": c_j, "ia_alea": alea, "ia_contre": contre_ia, "bonus": bonus, "score": score_p, "champ_manches": nb_m, "manches_gagnees": manches_gagnees, "save": save, "manche_actuelle": k, "graphique": graphique}
+                    save_json(tab_save)
                     return False
             x, y = values
             t[x][y] = c
@@ -538,10 +546,26 @@ def fenetre_jeu() -> None:
     Accueil.texte_dans_rectangle(20, 20, LARGEUR//4 - 20, 70, "ACCEUIL", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=25, tag="text_retour") #case Acueil
     fltk.rectangle(20, LONGUEUR - 100, LARGEUR//4 - 20, LONGUEUR - 50, remplissage="#513d57", couleur="#D9F2D1", epaisseur=5, tag="case_quitter") #case save and quitter
     Accueil.texte_dans_rectangle(20, LONGUEUR - 100, LARGEUR//4 - 20, LONGUEUR - 50, "SAVE & LEAVE", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=40, tag="text_quitter") #case save and quitter
+
+def save_json(d: dict):
+    reader = open("Rolit\save.json", "r", encoding="utf-8")
+    try:
+        data = json.load(reader)
+    except json.decoder.JSONDecodeError:
+        data = []
+    reader.close()
+    for e in data:
+        if e["save"] == d["save"]:
+            data.remove(e)
+    data.append(d)
+    writer = open("Rolit\save.json", "w", encoding="utf-8")
+    json.dump(data, writer)
+    writer.close()
     
 #main 
-def main(d: dict, graphique: bool):
+def main(d: dict):
     """fonction principale de jeu"""
+    graphique = d["graphique"]
     if not graphique:
         nb_j, nb_m, alea, c_j, manches_gagnees, contre_ia, avec_b = init_partie()
         for k in range(1, nb_m+1):
@@ -560,9 +584,11 @@ def main(d: dict, graphique: bool):
         afficher_resultat_partie(score_p, manches_gagnees, c_j)
     else:
         fenetre_jeu()
-        manches_gagnees, c_j = {c: 0 for c in list(couleur_joueur(d["champ_pseudo"], graphique=True).keys())}, couleur_joueur(d["champ_pseudo"], graphique=True)
-        for k in range(1, int(d["champ_manches"]) + 1):
-            t = tableau_depart(graphique=True)
+        manches_gagnees, c_j = d["manches_gagnees"] if d["manches_gagnees"] else {c: 0 for c in list(couleur_joueur(d["champ_pseudo"], graphique=True).keys())}, d["couleur_joueur"] if d["couleur_joueur"] else couleur_joueur(d["champ_pseudo"], graphique=True)
+        debut = d["manche_actuelle"] if d["manche_actuelle"] else 1
+        tableau_valide = True if d["tableau"] else False
+        for k in range(debut, int(d["champ_manches"]) + 1):
+            t = d["tableau"] if tableau_valide else tableau_depart(graphique=True)
             if d["bonus"]:
                 b = bonus(int(d["nb_joueurs"]))
                 for e in b:
@@ -572,17 +598,19 @@ def main(d: dict, graphique: bool):
             grille()
             fltk.efface("text_manche")
             Accueil.texte_dans_rectangle(LARGEUR//4,20,LARGEUR*3//4,20 + 50, "Manche "+str(k)+"/"+str(int(d["champ_manches"])), couleur="#D9F2D1", ancrage="center", police="Calibri", taille=40 , tag="text_manche")
-            v = jouer_manche(t, c_j, d["ia_alea"],d["ia_contre"],b, graphique=True)
+            v = jouer_manche(t, c_j, d["ia_alea"],d["ia_contre"], b, nb_m=int(d["champ_manches"]), manches_gagnees=manches_gagnees, score_p=None if k == 1 else d["score"], save=d["save"], k=k, graphique=True)
             if v in [True, False]:
                 fltk.ferme_fenetre()
                 return v
+            print(k)
             score_m = compte_couleur(t,b, graphique=True)
             afficher_resultat_manche(score_m, manches_gagnees, c_j, graphique=True)
-            score_p = score_m if k == 1 else additionne_dict(score_p,score_m)
+            d["score"] = score_m if k == 1 else additionne_dict(d["score"],score_m)
             fltk.efface("pion")
             fltk.efface("bonus")
+            tableau_valide = False
         fltk.ferme_fenetre()
-    return (score_p, manches_gagnees)
+    return (d["score"], manches_gagnees)
 
 if __name__ == '__main__':
     main({"champ_manches": 2, "champ_pseudo": [],"nb_joueurs": 4, "ia_alea": False, "ia_contre": False, "bonus": False}, graphique=False)
