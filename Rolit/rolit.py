@@ -10,6 +10,7 @@ def rolit():
         else:
             score_partie, manches_gagnees = values
             game = resultat.resultat(score_partie, manches_gagnees)
-        
+#amelioration save: quand la partie est finie, la sauvegarde est effacer.         
+
 if __name__ == "__main__":
     rolit()
