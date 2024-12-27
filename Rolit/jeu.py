@@ -255,7 +255,7 @@ def obtenir_coordonnees(t: list, alea: bool, graphique: bool = False):
         if alea:
             x, y = random.randint(0, 7), random.randint(0, 7)
             x, y = random.randint(0, 7), random.randint(0, 7)
-            while not(case_jouable(t,x,y,True, True)):
+            while not(case_jouable(t,x,y,True, graphique)):
                 x, y = random.randint(0, 7), random.randint(0, 7)
                 x, y = random.randint(0, 7), random.randint(0, 7)
             return (x, y)
@@ -276,7 +276,7 @@ def obtenir_coordonnees(t: list, alea: bool, graphique: bool = False):
                     else:
                         numero_ligne = (ys - 150)// TAILLE_CASE_Y
                         numero_colonne = (xs - 150) // TAILLE_CASE_X
-                        if case_jouable(t, int(numero_colonne), int(numero_ligne),False):
+                        if case_jouable(t, int(numero_colonne), int(numero_ligne),graphique):
                             return (int(numero_colonne), int(numero_ligne))
                 fltk.mise_a_jour()
 
