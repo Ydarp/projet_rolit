@@ -208,11 +208,13 @@ def case_jouable(t: list, x: int, y: int, ia: bool, graphique: bool = False):
     """
     if (0 > x or 7 < x) or (0 > y or 7 < y):
         if ia is False:
-            print("Case pas dans le tableau. Réessayez.")
+            if not graphique:
+                print("Case pas dans le tableau. Réessayez.")
         return False
     elif t[x][y] is not None:
         if ia is False:
-            print("Case déjà occupée. Réessayez.")
+            if not graphique:
+                print("Case déjà occupée. Réessayez.")
         return False
     for dx in (-1, 0, 1):
         for dy in (-1, 0, 1):
@@ -222,7 +224,8 @@ def case_jouable(t: list, x: int, y: int, ia: bool, graphique: bool = False):
             if 0 <= nx < 8 and 0 <= ny < 8 and t[nx][ny] is not None: #vérifie si t[nx][ny] est dans le tableau et est vide
                 return True
     if ia is False:
-        print("Case pas adjacente a une couleur. Réessayez.")
+        if not graphique:
+            print("Case pas adjacente a une couleur. Réessayez.")
     return False
 
 def obtenir_coordonnees(t: list, alea: bool, graphique: bool = False):
@@ -264,8 +267,8 @@ def obtenir_coordonnees(t: list, alea: bool, graphique: bool = False):
                     return "save"
                 elif tev == 'ClicGauche':
                     xs, ys = fltk.abscisse(ev), fltk.ordonnee(ev)
-                    if xs <= 150 or xs >= 650 or ys <= 150 or ys >= 650:
-                        print("non")
+                    #if xs <= 150 or xs >= 650 or ys <= 150 or ys >= 650:
+                    #    print("non")
                     if 20 <= xs <=LARGEUR//4 - 20 and LONGUEUR - 100 <= ys <= LONGUEUR - 50:
                         return "save"
                     if  20 <= xs <= LARGEUR//4 - 20 and 20 <= ys <= 70:
