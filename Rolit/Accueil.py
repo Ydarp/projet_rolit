@@ -85,6 +85,8 @@ def fenetre_acceuil() -> None:
     
     
 def texte_dans_rectangle(x1, y1, x2, y2, text: str, taille=25, couleur="black", police="Consolas", ancrage="center", tag=None):
+    if not text:
+        return
     largeur_champ = x2 - x1
     hauteur_champ = y2 - y1
     nb_espace = detecte_espace(text)
@@ -99,9 +101,11 @@ def texte_dans_rectangle(x1, y1, x2, y2, text: str, taille=25, couleur="black", 
     return fltk.texte(x1, y1 + hauteur_champ // 2, text, couleur=couleur, ancrage=ancrage, police=police, taille=taille, tag=tag)
 
 def detecte_espace(text: str):
-    t = text.split()
-    return len(t)-1
-
+    if text:
+        t = text.split()
+        return len(t)-1
+    else:
+        return 0
 def clique_dans_rectangle(x1, y1, x2, y2):
     """Vérifie si la souris est dans le rectangle
 

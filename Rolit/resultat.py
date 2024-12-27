@@ -31,11 +31,11 @@ def resultat(score_partie: dict, manches_gagnees: dict, c_j: dict, save: str) ->
     #Jaune
     Accueil.texte_dans_rectangle(ecart*2, 50*3 + ecart*4, ecart*2 + 100, 50*4 + ecart*4, "Jaune" if "Jaune" not in c_j else c_j["Jaune"], couleur="#D9F2D1", ancrage="w", police="Calibri", taille=22, tag="text_resultat")
     fltk.texte(largeur/2 - 60, 50*4 + ecart*4 - 25, score_partie["Jaune"], couleur="#D9F2D1", ancrage="w", police="Calibri", taille=22, tag="text_resultat")
-    fltk.texte(largeur/2 + 220, 50*4 + ecart*4 - 25, manches_gagnees["Jaune"] if nb_joueur > 1 else "0", couleur="#D9F2D1", ancrage="w", police="Calibri", taille=22, tag="text_resultat")
+    fltk.texte(largeur/2 + 220, 50*4 + ecart*4 - 25, manches_gagnees["Jaune"] if nb_joueur > 2 else "0", couleur="#D9F2D1", ancrage="w", police="Calibri", taille=22, tag="text_resultat")
     #Vert
     Accueil.texte_dans_rectangle(ecart*2, 50*4 + ecart*4, ecart*2 + 100, 50*5 + ecart*4, "Vert" if "Vert" not in c_j else c_j["Vert"], couleur="#D9F2D1", ancrage="w", police="Calibri", taille=22, tag="text_resultat")
     fltk.texte(largeur/2 - 60, 50*5 + ecart*4 - 25, score_partie["Vert"], couleur="#D9F2D1", ancrage="w", police="Calibri", taille=22, tag="text_resultat")
-    fltk.texte(largeur/2 + 220, 50*5 + ecart*4 - 25, manches_gagnees["Vert"] if nb_joueur > 2 else "0", couleur="#D9F2D1", ancrage="w", police="Calibri", taille=22, tag="text_resultat")
+    fltk.texte(largeur/2 + 220, 50*5 + ecart*4 - 25, manches_gagnees["Vert"] if nb_joueur > 1 else "0", couleur="#D9F2D1", ancrage="w", police="Calibri", taille=22, tag="text_resultat")
     #Bleu
     Accueil.texte_dans_rectangle(ecart*2, 50*5 + ecart*4, ecart*2 + 100, 50*6 + ecart*4, "Bleu" if "Bleu" not in c_j else c_j["Bleu"], couleur="#D9F2D1", ancrage="w", police="Calibri", taille=22, tag="text_resultat")
     fltk.texte(largeur/2 - 60, 50*6 + ecart*4 - 25, score_partie["Bleu"], couleur="#D9F2D1", ancrage="w", police="Calibri", taille=22, tag="text_resultat")

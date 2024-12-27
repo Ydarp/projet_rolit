@@ -619,7 +619,8 @@ def main(d: dict):
                 fltk.efface("bonus")
                 tableau_valide, bonus_valide = False, False
                 d["tableau"] = t
-        tab_save = {"tableau": d["tableau"], "couleur_joueur": c_j, "ia_alea": d["ia_alea"], "ia_contre": d["ia_contre"], "bonus": True if d["bonus"] else False, "score": d["score"], "champ_manches": d["champ_manches"], "manches_gagnees": manches_gagnees, "save": d["save"], "manche_actuelle": d["champ_manches"] + 1, "champ_pseudo": d["champ_pseudo"], "graphique": graphique}
+        print(d["champ_manches"])
+        tab_save = {"tableau": d["tableau"], "couleur_joueur": c_j, "ia_alea": d["ia_alea"], "ia_contre": d["ia_contre"], "bonus": True if d["bonus"] else False, "score": d["score"], "champ_manches": d["champ_manches"], "manches_gagnees": manches_gagnees, "save": d["save"], "manche_actuelle": int(d["champ_manches"]) + 1, "champ_pseudo": d["champ_pseudo"], "graphique": graphique}
         save_json(tab_save)
         fltk.ferme_fenetre()
     return (d["score"], manches_gagnees, c_j, d["save"]) if graphique else None
