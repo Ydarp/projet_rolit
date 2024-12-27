@@ -1,4 +1,4 @@
-import Accueil, jeu, resultat
+import Accueil, jeu, resultat, json
 
 def rolit():
     game = True
@@ -10,7 +10,6 @@ def rolit():
         else:
             score_partie, manches_gagnees, c_j, save = values
             game = resultat.resultat(score_partie, manches_gagnees, c_j, save)
-#amelioration save: quand la partie est finie, la sauvegarde est effacer.         
-
+            
 if __name__ == "__main__":
     rolit()
