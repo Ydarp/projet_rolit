@@ -8,8 +8,8 @@ def rolit():
         if values in [True, False]:
             game = values
         else:
-            score_partie, manches_gagnees = values
-            game = resultat.resultat(score_partie, manches_gagnees)
+            score_partie, manches_gagnees, c_j, save = values
+            game = resultat.resultat(score_partie, manches_gagnees, c_j, save)
 #amelioration save: quand la partie est finie, la sauvegarde est effacer.         
 
 if __name__ == "__main__":

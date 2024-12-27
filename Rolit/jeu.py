@@ -178,12 +178,7 @@ def valeur_dict_plus_grande(d: dict):
     Returns:
         list: tableau contenant les cle avec la plus grande valeur
     """
-    max_valeur = max(d.values())
-    c_max = []
-    for cle, val in d.items():
-        if val == max_valeur:
-            c_max.append(cle)
-    return c_max
+    return sorted(d, key=d.get, reverse=True)
  
 def additionne_dict(d1: dict,d2: dict):
     """Additionne les valeures de 2 dictionnaires avec les mêmes clés, avec les clés correspondantent. 
@@ -339,20 +334,19 @@ def capture_ia(t: list, ia: str,bonus: list, graphique: bool = False):
     t[list_alea[indice][0]][list_alea[indice][1]] = ia
     capture(t,list_alea[indice][0],list_alea[indice][1]) # manque peut etre la capture_fenetre
 
-def gagant_partie(d1: dict, d2: dict):
-    """_summary_
+def gagant_partie(points: dict, manches: dict):
+    """fait le classement de la partie
 
     Args:
-        d1 (dict): _description_
-        d2 (dict): _description_
+        points (dict): score par point
+        manches (dict): score par manche
 
     Returns:
-        list:
+        list: gagnant dans l'ordre
     """
-    g = valeur_dict_plus_grande(d1) #gagnant de la partie par manche
-    if len(g) > 1:
-        g = valeur_dict_plus_grande(d2) #gagnant de la partie par point
-    return g
+    classement = [(nom, manches[nom], points[nom]) for nom in manches]
+    classement.sort(key=lambda x: (-x[1], -x[2]))
+    return classement
 
 def avec_bonus():
     """Demande si l'utilisateur veut jouer avec des bonus
@@ -489,7 +483,7 @@ def afficher_resultat_partie(score: dict, manches_gagnees: dict, c_j: dict):
     """
     g = gagant_partie(manches_gagnees, score) #gagnant de la partie
 
-    print(c_j[g[0]],"a gagné la partie avec un score de", score[g[0]], "\n Voici le nombre de point :", score, "\n Voici le nombre de manche gagnée :", manches_gagnees)
+    print(c_j[g[0][0]],"a gagné la partie avec un score de", score[g[0][0]], "\n Voici le nombre de point :", score, "\n Voici le nombre de manche gagnée :", manches_gagnees)
 
 def bonus(nbre_joueur):
     """ fonction qui donne un tableau de bonus
@@ -621,7 +615,7 @@ def main(d: dict):
             fltk.efface("bonus")
             tableau_valide, bonus_valide = False, False
         fltk.ferme_fenetre()
-    return (d["score"], manches_gagnees)
+    return (d["score"], manches_gagnees, c_j, d["save"]) if graphique else None
 
 if __name__ == '__main__':
-    main({"champ_manches": 2, "champ_pseudo": [],"nb_joueurs": 4, "ia_alea": False, "ia_contre": False, "bonus": False}, graphique=False)
+    main({"champ_manches": 2, "champ_pseudo": [],"nb_joueurs": 4, "ia_alea": False, "ia_contre": False, "bonus": False, "graphique": False})

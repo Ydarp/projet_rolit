@@ -1,1 +1,3 @@
-print(len({"tableau": None, "couleur_joueur": None, "score": None, "manches_gagnees": None, "graphique": True, "champ_manches": 0, "champ_pseudo": 0,"nb_joueurs":0, "ia_alea": 0, "ia_contre": 0, "bonus": 0, "save": 0}))
+a = {"uwu": 2, "owo": 3}
+if "a" in a:
+    print(a["uwu"])
