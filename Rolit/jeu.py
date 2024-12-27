@@ -547,7 +547,7 @@ def fenetre_jeu() -> None:
     Accueil.texte_dans_rectangle(20, LONGUEUR - 100, LARGEUR//4 - 20, LONGUEUR - 50, "SAVE & LEAVE", couleur="#D9F2D1", police="Calibri", ancrage="center",taille=40, tag="text_quitter") #case save and quitter
 
 def save_json(d: dict):
-    reader = open("Rolit\save.json", "r", encoding="utf-8")
+    reader = open("save.json", "r", encoding="utf-8")
     try:
         data = json.load(reader)
     except json.decoder.JSONDecodeError:
@@ -557,7 +557,7 @@ def save_json(d: dict):
         if e["save"] == d["save"]:
             data.remove(e)
     data.append(d)
-    writer = open("Rolit\save.json", "w", encoding="utf-8")
+    writer = open("save.json", "w", encoding="utf-8")
     json.dump(data, writer)
     writer.close()
     

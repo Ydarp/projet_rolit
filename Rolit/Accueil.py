@@ -188,7 +188,7 @@ def pseudo_valide(d: dict, n: int):
     return True
     
 def detecte_si_json_existe(nom_fichier: str):
-    reader = open("Rolit\save.json", "r", encoding="utf-8")
+    reader = open("save.json", "r", encoding="utf-8")
     try:
         data = json.load(reader)
     except json.decoder.JSONDecodeError:
@@ -209,7 +209,7 @@ def nom_fichier_valide():
         return f"Sauvegarde({i})"
     
 def read_json(nom_fichier: str):
-    reader = open("Rolit\save.json", "r", encoding="utf-8")
+    reader = open("save.json", "r", encoding="utf-8")
     try:
         data = json.load(reader)
     except json.decoder.JSONDecodeError:
