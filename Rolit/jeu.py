@@ -416,13 +416,15 @@ def jouer_manche(t: list, c_j: dict, alea: bool, contre_ia: bool, bonus: list, n
             
             fltk.efface("text_tour")
             fltk.efface("text_score")
-            Accueil.texte_dans_rectangle(LARGEUR//4,80,LARGEUR*3//4,130, "Attente",couleur="#D9F2D1", ancrage="center", police="Calibri", taille=40 , tag="text_tour")
+            if contre_ia or alea:
+                Accueil.texte_dans_rectangle(LARGEUR//4,80,LARGEUR*3//4,130, "Attente",couleur="#D9F2D1", ancrage="center", police="Calibri", taille=40 , tag="text_tour")
             couleur = []
             for cle, val in score.items():
                 couleur.append(cle)
             for i in range(len(score)):
                 Accueil.texte_dans_rectangle(LARGEUR*3//4 + 30, 25 + 100/4 * i, LARGEUR - 20, (25 + 100/4) + 100/4 * i, couleur[i]+" : "+str(score[couleur[i]])+" points" if score[couleur[i]] > 1 else couleur[i]+" : "+str(score[couleur[i]])+" point", couleur="#D9F2D1", ancrage="w", police="Consolas", taille=30 , tag="text_tour")
-            fltk.attente(1/4) if graphique else time.sleep(1/4)
+            if contre_ia or alea:
+                fltk.attente(1/4) if graphique else time.sleep(1/4)
             fltk.efface("text_tour")
             for i in range(len(score)):
                 Accueil.texte_dans_rectangle(LARGEUR*3//4 + 30, 25 + 100/4 * i, LARGEUR - 20, (25 + 100/4) + 100/4 * i, couleur[i]+" : "+str(score[couleur[i]])+" points" if score[couleur[i]] > 1 else couleur[i]+" : "+str(score[couleur[i]])+" point", couleur="#D9F2D1", ancrage="w", police="Consolas", taille=30 , tag="text_tour")
