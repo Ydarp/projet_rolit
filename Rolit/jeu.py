@@ -326,7 +326,7 @@ def capture_ia(t: list, ia: str,bonus: list, graphique: bool = False):
                 if graphique:
                     capture_fenetre(tclone, True, ia)
                 if not graphique:
-                    capture(tclone,i,j)
+                capture(tclone,i,j)
                 if compte_couleur(tclone,bonus, graphique)[ia] > point:
                     point = compte_couleur(tclone,bonus, graphique)[ia]
                     list_alea = []
